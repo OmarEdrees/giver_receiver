@@ -4,7 +4,6 @@ import 'package:giver_receiver/logic/services/sized_config.dart';
 import 'package:giver_receiver/logic/services/supabase_services.dart';
 import 'package:giver_receiver/logic/services/variables_app.dart';
 import 'package:giver_receiver/presentation/screens/auth/sign_up_screen.dart';
-import 'package:giver_receiver/presentation/screens/user_items_screen.dart';
 import 'package:giver_receiver/presentation/widgets/auth/sign_up_in_SocialButton.dart';
 import 'package:giver_receiver/presentation/widgets/customTextFields.dart';
 
@@ -79,7 +78,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               focusNode: emailFocus,
                               validator: emailValidator,
                               controller: emailController,
-                              hintText: 'Enter Your Email',
+                              hintText: 'Enter your email',
                               icon: Icons.email,
                             ),
                             const SizedBox(height: 15),
@@ -87,7 +86,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               focusNode: passFocus,
                               validator: passwordValidator,
                               controller: passController,
-                              hintText: 'Enter Your Password',
+                              hintText: 'Enter password',
                               icon: Icons.lock,
                               isPassword: true,
                             ),
@@ -100,12 +99,12 @@ class _SignInScreenState extends State<SignInScreen> {
                                 ),
                                 SizedBox(width: 5),
                                 Text(
-                                  'Remmember me',
+                                  'Remember me',
                                   style: TextStyle(fontSize: 13),
                                 ),
                                 Spacer(),
                                 Text(
-                                  'Forgot Password?',
+                                  'forget password?',
                                   style: TextStyle(
                                     fontSize: 13,
                                     color: AppColors().primaryColor,
@@ -166,7 +165,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                           ),
                                         )
                                       : const Text(
-                                          'Sign In',
+                                          'Sign in',
                                           style: TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold,
@@ -191,7 +190,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                   ),
                                   child: Center(
                                     child: Text(
-                                      'Or Continue with',
+                                      'or continue with',
                                       style: TextStyle(color: Colors.grey[600]),
                                     ),
                                   ),
@@ -237,7 +236,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "Don't have account?",
+                            "You don't have an account?",
                             style: TextStyle(
                               fontSize: 12.5,
                               color: Colors.grey,

@@ -4,7 +4,7 @@ import 'package:giver_receiver/logic/cubit/on_boarding/cubit/on_boarding_cubit.d
 import 'package:giver_receiver/logic/services/colors_app.dart';
 import 'package:giver_receiver/logic/services/sized_config.dart';
 import 'package:giver_receiver/logic/services/variables_app.dart';
-import 'package:giver_receiver/presentation/screens/auth/sign_in_screen.dart';
+import 'package:giver_receiver/presentation/screens/role_selection_screen.dart';
 
 class OnBoardingScreen extends StatelessWidget {
   const OnBoardingScreen({super.key});
@@ -34,7 +34,7 @@ class OnBoardingScreen extends StatelessWidget {
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => SignInScreen(),
+                                builder: (context) => RoleSelectionScreen(),
                               ),
                             );
                           },
@@ -85,7 +85,7 @@ class OnBoardingScreen extends StatelessWidget {
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => SignInScreen(),
+                                builder: (context) => RoleSelectionScreen(),
                               ),
                             );
                           } else {

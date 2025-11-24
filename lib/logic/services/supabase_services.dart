@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:giver_receiver/logic/services/variables_app.dart';
 import 'package:giver_receiver/presentation/screens/auth/sign_up_screen.dart';
-import 'package:giver_receiver/presentation/screens/user_items_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SupabaseServices {
@@ -67,10 +66,11 @@ class SupabaseServices {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text('Login succecfully')));
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => UserItems()),
-      );
+      onSignUpSuccess(context);
+      // Navigator.pushReplacement(
+      //   context,
+      //   MaterialPageRoute(builder: (context) => UserItems()),
+      // );
     } on AuthException catch (e) {
       // خطأ من Supabase
       ScaffoldMessenger.of(

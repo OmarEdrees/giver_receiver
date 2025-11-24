@@ -60,7 +60,7 @@ class OnBoardingScreenWidget extends StatelessWidget {
                 Text(
                   body,
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 14, color: Colors.grey),
+                  style: TextStyle(fontSize: 15, color: Colors.grey),
                 ),
                 Spacer(),
                 Padding(

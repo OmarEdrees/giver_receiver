@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:giver_receiver/logic/services/colors_app.dart';
 import 'package:giver_receiver/logic/services/sign_up_services/save_profile_user_data.dart';
@@ -7,7 +6,6 @@ import 'package:giver_receiver/logic/services/sized_config.dart';
 import 'package:giver_receiver/logic/services/supabase_services.dart';
 import 'package:giver_receiver/logic/services/variables_app.dart';
 import 'package:giver_receiver/presentation/screens/auth/sign_in_screen.dart';
-import 'package:giver_receiver/presentation/screens/user_items_screen.dart';
 import 'package:giver_receiver/presentation/widgets/customTextFields.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -24,6 +22,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final saveUserData = SaveProfileUserData();
   File? _selectedImage;
   final _picker = ImagePicker();
+
   ////////////////////////////////////////////////////
   Future<void> pickImage() async {
     final picked = await _picker.pickImage(source: ImageSource.gallery);
@@ -49,10 +48,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 left: SizeConfig.width * 0.04,
                 bottom: SizeConfig.width * 0.07,
               ),
-              // symmetric(
-              //   horizontal: SizeConfig.width * 0.04,
-              //   vertical: SizeConfig.width * 0.07,
-              // ),
+
               child: ConstrainedBox(
                 constraints: BoxConstraints(
                   minHeight: MediaQuery.of(context).size.height - 55,
@@ -84,7 +80,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       SizedBox(height: 15),
 
                       Text(
-                        'Sign up!',
+                        'Sign Up!',
                         style: TextStyle(
                           letterSpacing: -0.5,
                           fontSize: 30,
@@ -92,12 +88,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(height: 2),
                       Text(
                         'Create a new account',
                         style: TextStyle(fontSize: 14, color: Colors.grey[600]),
                       ),
-                      SizedBox(height: 15),
+                      SizedBox(height: 10),
+
                       Form(
                         key: _formKey,
                         child: Column(
@@ -106,63 +102,67 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               focusNode: userNameControllerFocus,
                               validator: addChildNameValidator,
                               controller: userNameController,
-                              hintText: 'Enter userName',
+                              hintText: 'Enter username',
                               icon: Icons.person,
                             ),
                             const SizedBox(height: 10),
+
                             CustomTextFormField(
                               focusNode: fullNameFocus,
                               validator: addChildNameValidator,
                               controller: fullNameController,
-                              hintText: 'Enter Your full name',
+                              hintText: 'Enter full name',
                               icon: Icons.person,
                             ),
                             const SizedBox(height: 10),
+
                             CustomTextFormField(
                               focusNode: emailFocus,
                               validator: emailValidator,
                               controller: emailController,
-                              hintText: 'Enter Your Email',
+                              hintText: 'Enter your email',
                               icon: Icons.email,
                             ),
                             const SizedBox(height: 10),
+
                             CustomTextFormField(
                               focusNode: passFocus,
                               validator: passwordValidator,
                               controller: passController,
-                              hintText: 'Enter Your Password',
+                              hintText: 'Enter your password',
                               icon: Icons.lock,
                               isPassword: true,
                             ),
                             const SizedBox(height: 10),
+
                             CustomTextFormField(
                               keyboardType: TextInputType.number,
                               focusNode: phoneFocus,
                               validator: phoneValidator,
                               controller: phoneController,
-                              hintText: 'Enter Your phone',
+                              hintText: 'Enter phone number',
                               icon: Icons.phone,
                             ),
                             SizedBox(height: 15),
+
                             GestureDetector(
                               onTap: () async {
-                                if (_isLoading) return; // منع النقر المتكرر
+                                if (_isLoading) return;
                                 if (_formKey.currentState!.validate()) {
                                   if (!mounted) return;
-                                  setState(
-                                    () => _isLoading = true,
-                                  ); // تشغيل التحميل
+                                  setState(() => _isLoading = true);
+
                                   try {
-                                    // 1️⃣ تنفيذ signUp أولاً وانتظاره
                                     final authResponse =
                                         await SupabaseServices().signUp(
                                           context,
                                           emailController.text.trim(),
                                           passController.text.trim(),
                                         );
+
                                     final user = authResponse.user;
                                     if (!context.mounted) return;
-                                    // 2️⃣ بعد ما يخلص signUp، ينفذ حفظ البيانات
+
                                     if (user != null) {
                                       await saveUserData.saveUserData(
                                         context: context,
@@ -176,15 +176,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                         phone: phoneController.text.trim(),
                                         imageFile: _selectedImage,
                                       );
+
                                       Navigator.pushReplacement(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => UserItems(),
+                                          builder: (context) => SignInScreen(),
                                         ),
                                       );
                                     }
                                   } catch (e) {
-                                    // ❌ في حال حدوث خطأ
                                     if (!context.mounted) return;
                                     print(e);
                                     ScaffoldMessenger.of(context).showSnackBar(
@@ -195,9 +195,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     );
                                   } finally {
                                     if (!mounted) return;
-                                    setState(
-                                      () => _isLoading = false,
-                                    ); // إيقاف التحميل مهما كانت النتيجة
+                                    setState(() => _isLoading = false);
                                   }
                                 }
                               },
@@ -229,11 +227,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 ),
                               ),
                             ),
+
                             SizedBox(height: 20),
+
                             Text(
-                              'By contunuing Sign up you agree to the following',
+                              'By continuing, you agree to the following:',
                               style: TextStyle(
-                                fontSize: 12.5,
+                                fontSize: 13,
                                 color: Colors.grey,
                               ),
                             ),
@@ -243,14 +243,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 Text(
                                   'Terms & Conditions',
                                   style: TextStyle(
-                                    fontSize: 12.5,
+                                    fontSize: 13,
                                     color: AppColors().primaryColor,
                                   ),
                                 ),
                                 Text(
                                   ' without reservation',
                                   style: TextStyle(
-                                    fontSize: 12.5,
+                                    fontSize: 13,
                                     color: Colors.grey,
                                   ),
                                 ),
@@ -259,18 +259,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ],
                         ),
                       ),
+
                       Spacer(),
+
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
                             'Already have an account?',
-                            style: TextStyle(
-                              fontSize: 12.5,
-                              color: Colors.grey,
-                            ),
+                            style: TextStyle(fontSize: 13, color: Colors.grey),
                           ),
-
                           GestureDetector(
                             onTap: () {
                               Navigator.pushReplacement(
@@ -283,7 +281,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             child: Text(
                               ' Sign In',
                               style: TextStyle(
-                                fontSize: 12.5,
+                                fontSize: 13,
                                 color: AppColors().primaryColor,
                               ),
                             ),

@@ -2,9 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:giver_receiver/logic/services/sized_config.dart';
 import 'package:giver_receiver/presentation/screens/splash_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:flutter/services.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
 
   await Supabase.initialize(
     url: "https://dntwmnrsalbkadjnwfuz.supabase.co",
@@ -21,6 +27,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     SizeConfig.init(context);
     return MaterialApp(
+      ////////////////////////////
       theme: ThemeData(
         textSelectionTheme: TextSelectionThemeData(
           selectionHandleColor: Colors.black,

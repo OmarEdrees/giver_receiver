@@ -1,33 +1,39 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:giver_receiver/presentation/widgets/Donor/bottom_navigation_bar_donor.dart';
 import 'package:giver_receiver/presentation/widgets/on_boarding/on_boarding_models.dart';
+import 'package:image_picker/image_picker.dart';
 
 //////////////////////////////////////////////////////////////
 ///////            List of onboarding steps            ///////
 //////////////////////////////////////////////////////////////
 List<OnBoardingScreenWidget> steps = [
   OnBoardingScreenWidget(
-    title: 'Welcome to "The Giver & The Receiver"',
-
+    title: 'Welcome to "Donor & Recipient"',
     body:
         'Share the things you no longer need with others safely and privately.',
     image: "assets/lottie/Gift premium animation.json",
   ),
+
   OnBoardingScreenWidget(
     title: "Give What You Have",
     body:
         "Create a post for anything you want to give away, and let others see it anonymously.",
     image: "assets/lottie/Invite Friends or Share with Friends.json",
   ),
+
   OnBoardingScreenWidget(
-    title: "Receive What You Need",
+    title: "Get What You Need",
     body:
-        "If someone wants what you shared, they can contact the admin to receive it—without revealing identities.",
+        "If someone is interested in what you shared, they can contact the admin to receive it — without revealing identities.",
     image: "assets/lottie/Let's chat!.json",
   ),
+
   OnBoardingScreenWidget(
-    title: " Stay Private & Safe",
+    title: "Stay Private & Safe",
     body:
-        "Your identity is never revealed. Share and receive items confidently.",
+        "Your identity is never revealed. Share and receive items with confidence.",
     image: "assets/lottie/Data Protection.json",
   ),
 ];
@@ -41,7 +47,17 @@ final TextEditingController passController = TextEditingController();
 final TextEditingController fullNameController = TextEditingController();
 final TextEditingController phoneController = TextEditingController();
 final TextEditingController userNameController = TextEditingController();
-final TextEditingController addItems = TextEditingController();
+final TextEditingController addItemsTitle = TextEditingController();
+final TextEditingController addItemsDescription = TextEditingController();
+final TextEditingController addItemsQuantity = TextEditingController();
+final PageController pageControllerImages = PageController();
+late PageController pageControllerImagesItems;
+late PageController pageControllerImagesMyItems;
+final TextEditingController editeProfileName = TextEditingController();
+final TextEditingController editProfileEmail = TextEditingController();
+final TextEditingController editProfilePhone = TextEditingController();
+final TextEditingController itemScreenSearch = TextEditingController();
+final TextEditingController myItemScreenSearch = TextEditingController();
 
 //////////////////////////////////////////////////////////////
 //////////////         FocusNode            //////////////////
@@ -51,7 +67,13 @@ final FocusNode passFocus = FocusNode();
 final FocusNode fullNameFocus = FocusNode();
 final FocusNode phoneFocus = FocusNode();
 final FocusNode userNameControllerFocus = FocusNode();
-final FocusNode addItemsFocus = FocusNode();
+final FocusNode addItemsTitleFocus = FocusNode();
+final FocusNode addItemsDescriptionFocus = FocusNode();
+final FocusNode addItemsQuantityFocus = FocusNode();
+final FocusNode editProfileNameFocus = FocusNode();
+final FocusNode editProfileEmailFocus = FocusNode();
+final FocusNode editProfilePhoneFocus = FocusNode();
+final FocusNode itemScreenSearchFocus = FocusNode();
 
 //////////////////////////////////////////////////////////////
 //////////////         validator            //////////////////
@@ -126,13 +148,39 @@ String formatTime(String? dateTimeString) {
   final difference = now.difference(dateTime);
 
   if (difference.inMinutes <= 0) {
-    return 'Just now';
+    return 'now';
   } else if (difference.inMinutes < 60) {
     return '${difference.inMinutes}m ago';
   } else if (difference.inHours < 24) {
-    final hours = (difference.inMinutes / 60).floor(); // ✅ أدق
+    final hours = (difference.inMinutes / 60).floor();
     return '${hours}h ago';
   } else {
     return '${difference.inDays}d ago';
   }
 }
+
+//////////////////////////////////////////////////////////////
+/////             select doctor or parent              ///////
+//////////////////////////////////////////////////////////////
+String userRole = '';
+
+void onSignUpSuccess(BuildContext context) {
+  if (userRole == 'Donor') {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const MainBottomNavDonor()),
+    );
+    print(userRole);
+  } else {
+    // Navigator.pushReplacement(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => const MainBottomNavParent()),
+    // );
+  }
+}
+
+//////////////////////////////////////////////////////////////
+/////              select image variables              ///////
+//////////////////////////////////////////////////////////////
+final ImagePicker picker = ImagePicker();
+File? selectedImage;
