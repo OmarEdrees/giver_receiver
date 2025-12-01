@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:giver_receiver/logic/services/GetCurrentUserData/get_current_user_data.dart';
+import 'package:giver_receiver/logic/services/Donor/GetCurrentUserData/get_current_user_data.dart';
 import 'package:giver_receiver/logic/services/colors_app.dart';
-import 'package:giver_receiver/logic/services/my_items_services/my_items_servises/my_items_services.dart';
+import 'package:giver_receiver/logic/services/Donor/my_items_services/my_items_servises/my_items_services.dart';
 import 'package:giver_receiver/logic/services/variables_app.dart';
 import 'package:giver_receiver/presentation/screens/Donor/BottomNavigationBarDonor/my_items_screen/edit_my_items_screen.dart';
-import 'package:giver_receiver/presentation/widgets/items_screen/user_items_card/save_button_widget.dart';
+import 'package:giver_receiver/presentation/widgets/my_items_screen/save_button_widget_my_items.dart';
 
 class MyItemsCard extends StatefulWidget {
   final VoidCallback onRefresh;
@@ -130,6 +130,7 @@ class _MyItemsCardState extends State<MyItemsCard> {
               child: Stack(
                 alignment: Alignment.bottomCenter,
                 children: [
+                  // ----------------- صور العنصر -----------------
                   ClipRRect(
                     borderRadius: BorderRadius.circular(15),
                     child: PageView.builder(
@@ -151,6 +152,44 @@ class _MyItemsCardState extends State<MyItemsCard> {
                     ),
                   ),
 
+                  // ----------------- طبقة التعتيم السوداء -----------------
+                  IgnorePointer(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(
+                          0.35,
+                        ), // ← التعتيم (غيّر النسبة)
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                    ),
+                  ),
+
+                  // ----------------- رقم في الأعلى جهة اليسار -----------------
+                  Positioned(
+                    top: 10,
+                    left: 10,
+                    child: Container(
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.white, width: 1.5),
+                        shape: BoxShape.circle,
+                        color: AppColors().primaryColor,
+                      ),
+                      child: Center(
+                        child: Text(
+                          '5', // ← حط الرقم اللي بدك ياه
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 22,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  // ----------------- المؤشر (dots) -----------------
                   if (widget.images.length > 1)
                     Positioned(
                       bottom: 10,
@@ -188,7 +227,6 @@ class _MyItemsCardState extends State<MyItemsCard> {
 
           const SizedBox(height: 18),
 
-          // ------------------------- الحالة -------------------------
           // ------------------------- الحالة -------------------------
           Row(
             children: [
@@ -244,7 +282,7 @@ class _MyItemsCardState extends State<MyItemsCard> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Expanded(
-                child: SaveButtonWidget(
+                child: SaveButtonWidgetMyItems(
                   icon: Icons.edit,
                   title: 'Edit',
                   ontap: () async {
@@ -265,27 +303,9 @@ class _MyItemsCardState extends State<MyItemsCard> {
                 ),
               ),
               SizedBox(width: 10),
-              Container(
-                width: 45,
-                height: 45,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: AppColors().primaryColor,
-                ),
-                child: Center(
-                  child: Text(
-                    '5',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 28,
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(width: 10),
+
               Expanded(
-                child: SaveButtonWidget(
+                child: SaveButtonWidgetMyItems(
                   icon: Icons.delete,
                   title: 'Delete',
                   ontap: () async {

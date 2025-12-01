@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:giver_receiver/logic/services/my_items_services/my_items_servises/my_items_services.dart';
+import 'package:giver_receiver/logic/services/Donor/my_items_services/my_items_servises/my_items_services.dart';
 import 'package:giver_receiver/logic/services/variables_app.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter/material.dart';
@@ -80,7 +80,9 @@ class AddItemsController with ChangeNotifier {
     // مسح الصور
     selectedImages.clear();
     currentPage = 0;
-    pageControllerImages.jumpToPage(0);
+    if (selectedImages.length > 1) {
+      pageControllerImages.jumpToPage(0);
+    }
 
     // مسح التصنيف والحالة
     selectedCategoryName = null;

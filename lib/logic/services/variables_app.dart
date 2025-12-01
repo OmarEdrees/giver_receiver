@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:giver_receiver/presentation/widgets/Donor/bottom_navigation_bar_donor.dart';
+import 'package:giver_receiver/presentation/widgets/Recipient/bottom_navigation_bar_recipient.dart';
 import 'package:giver_receiver/presentation/widgets/on_boarding/on_boarding_models.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -58,6 +59,9 @@ final TextEditingController editProfileEmail = TextEditingController();
 final TextEditingController editProfilePhone = TextEditingController();
 final TextEditingController itemScreenSearch = TextEditingController();
 final TextEditingController myItemScreenSearch = TextEditingController();
+final TextEditingController saveScreenSearch = TextEditingController();
+final TextEditingController reasonController = TextEditingController();
+final TextEditingController requestScreenSearch = TextEditingController();
 
 //////////////////////////////////////////////////////////////
 //////////////         FocusNode            //////////////////
@@ -172,10 +176,10 @@ void onSignUpSuccess(BuildContext context) {
     );
     print(userRole);
   } else {
-    // Navigator.pushReplacement(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => const MainBottomNavParent()),
-    // );
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const MainBottomNavRecipient()),
+    );
   }
 }
 

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:giver_receiver/logic/services/colors_app.dart';
 
-class SaveButtonWidget extends StatefulWidget {
+class SaveButtonWidgetMyItems extends StatefulWidget {
   final IconData icon;
   final String title;
   final Future<void> Function()? ontap;
-  const SaveButtonWidget({
+  const SaveButtonWidgetMyItems({
     super.key,
     required this.icon,
     required this.title,
@@ -13,10 +13,11 @@ class SaveButtonWidget extends StatefulWidget {
   });
 
   @override
-  State<SaveButtonWidget> createState() => _SaveButtonWidgetState();
+  State<SaveButtonWidgetMyItems> createState() =>
+      _SaveButtonWidgetMyItemsState();
 }
 
-class _SaveButtonWidgetState extends State<SaveButtonWidget> {
+class _SaveButtonWidgetMyItemsState extends State<SaveButtonWidgetMyItems> {
   bool changeColor = false; // ← خليها هنا داخل الـ State
 
   @override

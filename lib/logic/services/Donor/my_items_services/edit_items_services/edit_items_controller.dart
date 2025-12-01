@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:giver_receiver/logic/services/my_items_services/my_items_servises/my_items_services.dart';
+import 'package:giver_receiver/logic/services/Donor/my_items_services/my_items_servises/my_items_services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:giver_receiver/logic/services/variables_app.dart';

@@ -266,11 +266,11 @@
 
 // file: items_screen.dart
 import 'package:flutter/material.dart';
-import 'package:giver_receiver/logic/services/GetCurrentUserData/get_current_user_data.dart';
+import 'package:giver_receiver/logic/services/Donor/GetCurrentUserData/get_current_user_data.dart';
 import 'package:giver_receiver/logic/services/colors_app.dart';
-import 'package:giver_receiver/logic/services/items_services/items_services.dart';
+import 'package:giver_receiver/logic/services/Donor/items_services/items_services.dart';
 import 'package:giver_receiver/logic/services/variables_app.dart';
-import 'package:giver_receiver/presentation/screens/CustomHeader/custom_header_items.dart';
+import 'package:giver_receiver/presentation/widgets/CustomHeader/custom_header_items.dart';
 import 'package:giver_receiver/presentation/screens/Donor/add_items_screen.dart';
 import 'package:giver_receiver/presentation/widgets/items_screen/filter_items_bottom_sheet.dart';
 import 'package:giver_receiver/presentation/widgets/items_screen/user_items_card/user_items_card.dart';
@@ -403,36 +403,41 @@ class _ItemsScreenState extends State<ItemsScreen> {
                 ),
 
                 // ------------------ إضافة عنصر ------------------
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 15,
-                    vertical: 10,
-                  ),
-                  child: GestureDetector(
-                    onTap: () async {
-                      await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              AddItemsScreen(onTipAdded: loadData),
+                userRole == "Donor"
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 15,
+                          vertical: 10,
                         ),
-                      );
-                      loadData();
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(15),
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Text(
-                        'What do you want to give today?',
-                        style: TextStyle(color: Colors.grey[700], fontSize: 15),
-                      ),
-                    ),
-                  ),
-                ),
+                        child: GestureDetector(
+                          onTap: () async {
+                            await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    AddItemsScreen(onTipAdded: loadData),
+                              ),
+                            );
+                            loadData();
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(15),
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: Colors.grey[200],
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: Text(
+                              'What do you want to give today?',
+                              style: TextStyle(
+                                color: Colors.grey[700],
+                                fontSize: 15,
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    : SizedBox.shrink(),
 
                 // ------------------ عرض العناصر ------------------
                 Expanded(
@@ -460,6 +465,7 @@ class _ItemsScreenState extends State<ItemsScreen> {
                             return Padding(
                               padding: const EdgeInsets.only(bottom: 12),
                               child: UserItemsCard(
+                                itemId: item['id'],
                                 title: item['title'],
                                 description: item['description'],
                                 imageUrls: images,

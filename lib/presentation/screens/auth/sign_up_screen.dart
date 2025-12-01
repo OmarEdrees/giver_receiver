@@ -175,6 +175,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                             .trim(),
                                         phone: phoneController.text.trim(),
                                         imageFile: _selectedImage,
+                                        role: userRole == 'Donor'
+                                            ? 'Donor'
+                                            : 'Recipient',
                                       );
 
                                       Navigator.pushReplacement(

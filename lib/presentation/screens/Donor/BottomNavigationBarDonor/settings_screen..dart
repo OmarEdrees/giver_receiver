@@ -1,14 +1,15 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:giver_receiver/logic/services/GetCurrentUserData/get_current_user_data.dart';
+import 'package:giver_receiver/logic/services/Donor/GetCurrentUserData/get_current_user_data.dart';
 import 'package:giver_receiver/logic/services/variables_app.dart';
-import 'package:giver_receiver/presentation/screens/CustomHeader/custom_header.dart';
+import 'package:giver_receiver/presentation/screens/Recipient/save_items_screen/save_items_screen.dart';
+import 'package:giver_receiver/presentation/widgets/CustomHeader/custom_header.dart';
 import 'package:giver_receiver/presentation/screens/Donor/BottomNavigationBarDonor/items_screen.dart';
 import 'package:giver_receiver/presentation/screens/Donor/BottomNavigationBarDonor/my_items_screen/my_items_screen..dart';
 import 'package:giver_receiver/presentation/screens/auth/edite_profile_screen.dart';
 import 'package:giver_receiver/presentation/screens/auth/sign_in_screen.dart';
-import 'package:giver_receiver/presentation/widgets/settings/buildListTile.dart';
+import 'package:giver_receiver/presentation/widgets/settings_screen/buildListTile.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -141,6 +142,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
+              buildListTile(
+                icon: Icons.save,
+                title: "Save Items",
+                trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SaveItemsScreen(),
+                    ),
+                  );
+                },
+              ),
+              divider(),
               buildListTile(
                 icon: Icons.settings,
                 title: "Settings",

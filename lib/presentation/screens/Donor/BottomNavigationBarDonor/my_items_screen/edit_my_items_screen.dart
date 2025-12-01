@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:giver_receiver/logic/services/colors_app.dart';
-import 'package:giver_receiver/logic/services/my_items_services/edit_items_services/edit_items_controller.dart';
+import 'package:giver_receiver/logic/services/Donor/my_items_services/edit_items_services/edit_items_controller.dart';
 import 'package:giver_receiver/logic/services/variables_app.dart';
 import 'package:giver_receiver/presentation/widgets/customTextFields.dart';
-import 'package:giver_receiver/presentation/screens/CustomHeader/custom_header.dart';
+import 'package:giver_receiver/presentation/widgets/CustomHeader/custom_header.dart';
 
 class EditItemsScreen extends StatefulWidget {
   final String itemId;

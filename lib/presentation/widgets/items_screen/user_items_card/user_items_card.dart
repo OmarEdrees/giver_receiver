@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:giver_receiver/logic/services/colors_app.dart';
 import 'package:giver_receiver/logic/services/variables_app.dart';
-import 'package:giver_receiver/presentation/widgets/items_screen/user_items_card/save_button_widget.dart';
+import 'package:giver_receiver/presentation/widgets/Recipient/items_screen/order_button_bottom_sheet.dart';
+import 'package:giver_receiver/presentation/widgets/Recipient/save_items_screen/SaveItemManager.dart';
+import 'package:giver_receiver/presentation/widgets/items_screen/user_items_card/save_button_widget_items.dart';
+import 'package:giver_receiver/presentation/widgets/my_items_screen/save_button_widget_my_items.dart';
 
 class UserItemsCard extends StatefulWidget {
   // final String name;
   // final String specialty;
+  final String itemId;
   final String title;
-
   final String description;
   final List<String> imageUrls;
   final String timeAgo;
@@ -17,6 +20,7 @@ class UserItemsCard extends StatefulWidget {
     super.key,
     // required this.name,
     // required this.specialty,
+    required this.itemId,
     required this.title,
     required this.description,
     required this.timeAgo,
@@ -30,11 +34,18 @@ class UserItemsCard extends StatefulWidget {
 
 class _UserItemsCardState extends State<UserItemsCard> {
   int currentPage = 0;
+  bool isSaved = false;
+
+  void loadSaveStatus() async {
+    isSaved = await SaveItemManager.isItemSaved(widget.itemId);
+    setState(() {});
+  }
 
   @override
   void initState() {
     super.initState();
     pageControllerImagesItems = PageController();
+    loadSaveStatus();
   }
 
   @override
@@ -214,18 +225,51 @@ class _UserItemsCardState extends State<UserItemsCard> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Expanded(
-                child: SaveButtonWidget(
+                child: SaveButtonWidgetItems(
+                  onTap: () {
+                    print('likedddddddddddddddddddddd');
+                  },
                   icon: Icons.thumb_up_outlined,
-                  title: '250',
+                  title: 'Like',
+                  flipColorOnTap: true,
                 ),
               ),
               SizedBox(width: 15),
               Expanded(
-                child: SaveButtonWidget(
+                child: SaveButtonWidgetItems(
+                  onTap: () async {
+                    await SaveItemManager.toggleSaveItem(widget.itemId);
+                    loadSaveStatus(); // تحديث اللون فوراً
+                    print("Item Saved Status Changed");
+                  },
                   icon: Icons.save_outlined,
                   title: 'Save',
+                  flipColorOnTap: false, // ← لا تغيّر اللون تلقائياً
+                  isActive: isSaved, // ← اللون يأتي من حالة الحفظ
                 ),
               ),
+              userRole == 'Recipient' ? SizedBox(width: 15) : SizedBox.shrink(),
+              userRole == 'Recipient'
+                  ? Expanded(
+                      child: SaveButtonWidgetMyItems(
+                        ontap: () {
+                          return showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(25),
+                              ),
+                            ),
+                            builder: (_) =>
+                                OrderRequestBottomSheet(itemId: widget.itemId),
+                          );
+                        },
+                        icon: Icons.volunteer_activism_outlined,
+                        title: 'Order',
+                      ),
+                    )
+                  : SizedBox.shrink(),
             ],
           ),
         ],

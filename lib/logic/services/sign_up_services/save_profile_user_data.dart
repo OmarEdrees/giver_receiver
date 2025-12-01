@@ -48,6 +48,7 @@ class SaveProfileUserData {
     required String email,
     required String fullName,
     required String phone,
+    required String role,
     File? imageFile,
   }) async {
     if (!formKey.currentState!.validate()) return;
@@ -72,6 +73,7 @@ class SaveProfileUserData {
         'full_name': fullName,
         'phone_number': phone,
         'image': imageUrl,
+        'role': role,
 
         //"tokens": [await getIt<FirebaseMessaging>().getToken()]
       });
