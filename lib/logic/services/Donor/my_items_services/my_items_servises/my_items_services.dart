@@ -105,11 +105,11 @@ class MyItemsServices {
       final response = await supabase
           .from('user_items')
           .select()
-          .order('created_at', ascending: false); // لترتيب الأحدث أولاً
+          .eq('is_hidden', false) // ← إخفاء العناصر المعطلة
+          .order('created_at', ascending: false);
 
-      // التأكد من أن النتيجة ليست فارغة
       if (response.isEmpty) {
-        print('No items found for user');
+        print('No visible items found');
         return [];
       }
 
@@ -119,6 +119,25 @@ class MyItemsServices {
       return null;
     }
   }
+  // Future<List<Map<String, dynamic>>?> getAllItems() async {
+  //   try {
+  //     final response = await supabase
+  //         .from('user_items')
+  //         .select()
+  //         .order('created_at', ascending: false); // لترتيب الأحدث أولاً
+
+  //     // التأكد من أن النتيجة ليست فارغة
+  //     if (response.isEmpty) {
+  //       print('No items found for user');
+  //       return [];
+  //     }
+
+  //     return List<Map<String, dynamic>>.from(response);
+  //   } catch (e) {
+  //     print('Get Items Error: $e');
+  //     return null;
+  //   }
+  // }
 
   ////////////////////////////////////////////////////////////////////////////
   Future<List<Map<String, dynamic>>?> getMyItems() async {
