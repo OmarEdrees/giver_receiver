@@ -225,11 +225,11 @@ class _MyRequestsScreenState extends State<MyRequestsScreen> {
                             child: Text("pending"),
                           ),
                           DropdownMenuItem(
-                            value: "Approved",
+                            value: "approve",
                             child: Text("Approved"),
                           ),
                           DropdownMenuItem(
-                            value: "Rejected",
+                            value: "reject",
                             child: Text("Rejected"),
                           ),
                         ],
@@ -267,12 +267,14 @@ class _MyRequestsScreenState extends State<MyRequestsScreen> {
                       final imageUrl = req["attachment_url"];
                       final reason = req["reason"];
                       final timeAgo = formatTime(req["created_at"]);
-                      final status = req["status"] ?? "Pending";
+                      final status = req["status"] ?? "pending";
 
-                      Color statusColor = status == "Approved"
+                      Color statusColor = status == "approve"
                           ? Colors.green
-                          : status == "Rejected"
+                          : status == "reject"
                           ? Colors.red
+                          : status == "delivered"
+                          ? Colors.blue
                           : Colors.orange;
 
                       return Container(
