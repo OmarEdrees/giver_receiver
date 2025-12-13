@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:giver_receiver/logic/services/colors_app.dart';
-import 'package:giver_receiver/presentation/screens/Donor/BottomNavigationBarDonor/chats_screen.dart';
+import 'package:giver_receiver/presentation/screens/Donor/BottomNavigationBarDonor/chats/chats_screen.dart';
 import 'package:giver_receiver/presentation/screens/Donor/BottomNavigationBarDonor/my_items_screen/my_items_screen..dart';
 import 'package:giver_receiver/presentation/screens/Donor/BottomNavigationBarDonor/settings_screen..dart';
 import 'package:giver_receiver/presentation/screens/Donor/BottomNavigationBarDonor/items_screen.dart';
@@ -20,7 +20,7 @@ class _MainBottomNavDonorState extends State<MainBottomNavDonor>
   late final List<Widget> _pages = [
     ItemsScreen(),
     MyItemsScreen(),
-    ChatsScreen(),
+    ChatssDonorScreen(),
     SettingsScreen(),
   ];
 

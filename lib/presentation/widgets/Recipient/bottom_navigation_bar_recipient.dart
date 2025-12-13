@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:giver_receiver/logic/services/colors_app.dart';
-import 'package:giver_receiver/presentation/screens/Donor/BottomNavigationBarDonor/chats_screen.dart';
 import 'package:giver_receiver/presentation/screens/Donor/BottomNavigationBarDonor/settings_screen..dart';
 import 'package:giver_receiver/presentation/screens/Donor/BottomNavigationBarDonor/items_screen.dart';
-import 'package:giver_receiver/presentation/screens/Recipient/request_screen/request_screen.dart';
+import 'package:giver_receiver/presentation/screens/Recipient/BottomNavigationBarRecipient/chats/chats_screen.dart';
+import 'package:giver_receiver/presentation/screens/Recipient/BottomNavigationBarRecipient/request_screen/request_screen.dart';
 import 'package:motion_tab_bar/MotionTabBar.dart';
 
 class MainBottomNavRecipient extends StatefulWidget {
@@ -20,7 +20,7 @@ class _MainBottomNavDonorState extends State<MainBottomNavRecipient>
   late final List<Widget> _pages = [
     ItemsScreen(),
     MyRequestsScreen(),
-    ChatsScreen(),
+    ChatssRecipientScreen(),
     SettingsScreen(),
   ];
 
