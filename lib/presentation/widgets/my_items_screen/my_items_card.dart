@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:giver_receiver/logic/cubit/chat/chat_cubit.dart';
 import 'package:giver_receiver/logic/services/Donor/GetCurrentUserData/get_current_user_data.dart';
 import 'package:giver_receiver/logic/services/colors_app.dart';
 import 'package:giver_receiver/logic/services/Donor/my_items_services/my_items_servises/my_items_services.dart';
 import 'package:giver_receiver/logic/services/variables_app.dart';
 import 'package:giver_receiver/presentation/screens/Donor/BottomNavigationBarDonor/my_items_screen/edit_my_items_screen.dart';
+import 'package:giver_receiver/presentation/screens/Recipient/BottomNavigationBarRecipient/chats/chat_screen.dart';
 import 'package:giver_receiver/presentation/widgets/my_items_screen/save_button_widget_my_items.dart';
 
 class MyItemsCard extends StatefulWidget {
@@ -14,6 +17,14 @@ class MyItemsCard extends StatefulWidget {
   final List<String> images;
   final bool isAvailable;
   final String timeAgo;
+  final String status;
+  final Color statusColor;
+  final String currentUserId;
+  final String? otherUserId;
+  final String? otherName;
+  final String? otherImage;
+  final String? requestId;
+  final int? requestsCount;
 
   const MyItemsCard({
     super.key,
@@ -24,6 +35,14 @@ class MyItemsCard extends StatefulWidget {
     required this.images,
     required this.isAvailable,
     required this.timeAgo,
+    required this.status,
+    required this.statusColor,
+    required this.currentUserId,
+    required this.otherUserId,
+    required this.otherName,
+    required this.otherImage,
+    required this.requestId,
+    required this.requestsCount,
   });
 
   @override
@@ -39,6 +58,57 @@ class _MyItemsCardState extends State<MyItemsCard> {
     super.initState();
     pageControllerImagesMyItems = PageController();
     isDisEnable = widget.isAvailable;
+  }
+
+  ////////////////////////////////////////////////////////////////////////
+  // String generateChatId(String userA, String userB) {
+  //   final ids = [userA, userB]..sort();
+  //   return "${ids[0]}_${ids[1]}";
+  // }
+  String generateChatId({
+    required String userA,
+    required String userB,
+    required String requestId,
+    required String chatType, // admin | donor
+  }) {
+    final ids = [userA, userB]..sort();
+    return "${chatType}_${requestId}_${ids[0]}_${ids[1]}";
+  }
+
+  ///////////////////////////////////////////////////////////////////////////////
+  void openDonorRecipientChat({
+    required BuildContext context,
+    required String currentUserId, // موهوب
+    required String otherUserId, // واهب
+    required String otherName,
+    required String otherImage,
+    required String requestId,
+  }) {
+    // final chatId = generateChatId(currentUserId, otherUserId);
+    final chatId = generateChatId(
+      userA: currentUserId,
+      userB: otherUserId,
+      requestId: requestId,
+      chatType: 'donor',
+    );
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => BlocProvider(
+          create: (_) => UserChatCubit(
+            chatId: chatId,
+            currentUserId: currentUserId,
+            otherUserId: otherUserId,
+          )..loadChat(),
+          child: ChatRecipientScreen(
+            chatId: chatId,
+            recipientName: otherName,
+            // recipientImage: otherImage,
+          ),
+        ),
+      ),
+    );
   }
 
   @override
@@ -178,7 +248,7 @@ class _MyItemsCardState extends State<MyItemsCard> {
                       ),
                       child: Center(
                         child: Text(
-                          '5', // ← حط الرقم اللي بدك ياه
+                          "${widget.requestsCount}", // ← حط الرقم اللي بدك ياه
                           style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -236,10 +306,14 @@ class _MyItemsCardState extends State<MyItemsCard> {
                   vertical: 6,
                 ),
                 decoration: BoxDecoration(
+                  border: Border.all(
+                    color: widget.isAvailable ? Colors.green : Colors.red,
+                    width: 1.2,
+                  ),
                   color: widget.isAvailable
                       ? Colors.green[100]
                       : Colors.red[100],
-                  borderRadius: BorderRadius.circular(14),
+                  borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
                   widget.isAvailable ? "Available" : 'UnAvailable',
@@ -251,27 +325,45 @@ class _MyItemsCardState extends State<MyItemsCard> {
                 ),
               ),
               Spacer(),
-              Row(
-                children: [
-                  Text(
-                    isDisEnable ? "Enable" : 'Disable',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
+                decoration: BoxDecoration(
+                  color: widget.statusColor.withOpacity(0.15),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: widget.statusColor, width: 1.2),
+                ),
+                child: Text(
+                  widget.status,
+                  style: TextStyle(
+                    color: widget.statusColor,
+                    fontWeight: FontWeight.bold,
                   ),
-                  SizedBox(width: 5),
-                  Switch(
-                    value: isDisEnable,
-                    activeColor: AppColors().primaryColor,
-                    onChanged: (v) {
-                      setState(() {
-                        isDisEnable = v;
-                      });
-                    },
-                  ),
-                ],
+                ),
               ),
+              // Row(
+              //   children: [
+              //     Text(
+              //       isDisEnable ? "Enable" : 'Disable',
+              //       style: const TextStyle(
+              //         fontWeight: FontWeight.bold,
+              //         fontSize: 16,
+              //       ),
+              //     ),
+              //     SizedBox(width: 5),
+              //     Switch(
+              //       value: isDisEnable,
+              //       activeColor: AppColors().primaryColor,
+              //       onChanged: (v) {
+              //         setState(() {
+              //           isDisEnable = v;
+              //         });
+              //       },
+              //     ),
+              //   ],
+              // ),
             ],
           ),
 
@@ -443,6 +535,58 @@ class _MyItemsCardState extends State<MyItemsCard> {
               ),
             ],
           ),
+          // widget.status == 'approve'
+          //     ? Padding(
+          //         padding: const EdgeInsets.only(top: 10),
+          //         child: Row(
+          //           children: [
+          //             Expanded(
+          //               child: SaveButtonWidgetMyItems(
+          //                 icon: Icons.chat_bubble,
+          //                 title: 'Open Chat Session',
+          //                 ontap: () async {
+          //                   openDonorRecipientChat(
+          //                     context: context,
+          //                     currentUserId: widget.currentUserId,
+          //                     otherUserId: widget.otherUserId,
+          //                     otherName: widget.otherName,
+          //                     otherImage: widget.otherImage,
+          //                     requestId: widget.requestId,
+          //                   );
+          //                 },
+          //               ),
+          //             ),
+          //           ],
+          //         ),
+          //       )
+          //     : SizedBox.shrink(),
+          widget.otherUserId != null &&
+                  widget.otherName != null &&
+                  widget.otherImage != null
+              ? Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: SaveButtonWidgetMyItems(
+                          icon: Icons.chat_bubble,
+                          title: 'Open Chat Session',
+                          ontap: () async {
+                            openDonorRecipientChat(
+                              context: context,
+                              currentUserId: widget.currentUserId,
+                              otherUserId: widget.otherUserId!, // ✅ مضمون
+                              otherName: widget.otherName!,
+                              otherImage: widget.otherImage!,
+                              requestId: widget.requestId!,
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              : const SizedBox.shrink(),
         ],
       ),
     );

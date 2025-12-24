@@ -136,7 +136,7 @@ class ChatssRecipientScreen extends StatelessWidget {
                                 child: ChatRecipientScreen(
                                   chatId: chatId,
                                   recipientName: recipientName,
-                                  recipientImage: recipientImage,
+                                  //recipientImage: recipientImage,
                                 ),
                               ),
                             ),

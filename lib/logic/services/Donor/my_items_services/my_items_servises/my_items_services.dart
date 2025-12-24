@@ -140,15 +140,54 @@ class MyItemsServices {
   // }
 
   ////////////////////////////////////////////////////////////////////////////
-  Future<List<Map<String, dynamic>>?> getMyItems() async {
+  // Future<List<Map<String, dynamic>>> getMyItems() async {
+  //   try {
+  //     final userId = Supabase.instance.client.auth.currentUser?.id;
+  //     if (userId == null) return [];
+
+  //     final response = await Supabase.instance.client
+  //         .from('user_items')
+  //         .select('''
+  //         *,
+  //         requests (
+  //           status
+  //         )
+  //       ''')
+  //         .eq('user_id', userId)
+  //         .order('created_at', ascending: false);
+
+  //     return List<Map<String, dynamic>>.from(response);
+  //   } catch (e) {
+  //     print("❌ ERROR GET USER ITEMS: $e");
+  //     return [];
+  //   }
+  // }
+  Future<List<Map<String, dynamic>>> getMyItems() async {
     try {
       final userId = Supabase.instance.client.auth.currentUser?.id;
-
       if (userId == null) return [];
 
       final response = await Supabase.instance.client
           .from('user_items')
-          .select('*')
+          .select('''
+          *,
+          requests (
+            id,
+            status,
+            requester_id,
+            donor_id,
+            requester:users!requests_requester_id_fkey (
+              id,
+              full_name,
+              image
+            ),
+            donor:users!requests_donor_id_fkey (
+              id,
+              full_name,
+              image
+            )
+          )
+        ''')
           .eq('user_id', userId)
           .order('created_at', ascending: false);
 

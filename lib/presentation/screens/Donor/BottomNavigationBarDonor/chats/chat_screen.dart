@@ -45,7 +45,8 @@ class _ChatDonorScreenState extends State<ChatDonorScreen> {
           children: [
             CircleAvatar(
               radius: 22,
-              backgroundImage: NetworkImage(widget.recipientImage),
+              backgroundColor: Colors.grey.shade600,
+              // backgroundImage: NetworkImage(widget.recipientImage),
             ),
             SizedBox(width: 12),
             Text(

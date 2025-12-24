@@ -66,7 +66,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         child: Column(
           children: [
             const CustomHeader(icon: Icons.settings, title: 'Settings'),
-            const SizedBox(height: 25),
+            const SizedBox(height: 20),
             // صورة البروفايل
             CircleAvatar(
               radius: 75,
@@ -116,6 +116,74 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 style: TextStyle(color: Colors.black),
               ),
             ),
+            const SizedBox(height: 20),
+            userRole == "Donor"
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      FutureBuilder(
+                        future: CurrentUserData().getCurrentDonationsCount(),
+                        builder: (context, snapshot) {
+                          final count = snapshot.data ?? 0;
+                          return Column(
+                            children: [
+                              Text(
+                                "$count",
+                                style: TextStyle(
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(height: 5),
+                              Text(
+                                "Current donations",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 25),
+                        child: SizedBox(
+                          height: 50,
+                          child: VerticalDivider(
+                            thickness: 3,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                      FutureBuilder(
+                        future: CurrentUserData().getPreviousDonationsCount(),
+                        builder: (context, snapshot) {
+                          final count = snapshot.data ?? 0;
+                          return Column(
+                            children: [
+                              Text(
+                                "$count",
+                                style: TextStyle(
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(height: 5),
+                              Text(
+                                "Previous donations",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                    ],
+                  )
+                : SizedBox.shrink(),
           ],
         ),
       ),

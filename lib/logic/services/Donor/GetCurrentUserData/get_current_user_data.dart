@@ -95,4 +95,43 @@ class CurrentUserData {
       return null;
     }
   }
+
+  ////////////////////////////////////////////////////////////////////////////////
+  Future<int> getCurrentDonationsCount() async {
+    final userId = Supabase.instance.client.auth.currentUser!.id;
+
+    final response = await Supabase.instance.client
+        .from('user_items')
+        .select('''
+        id,
+        requests!inner (
+          status
+        )
+      ''')
+        .eq('user_id', userId)
+        .eq('requests.status', 'pending');
+
+    // نعد العناصر بدون تكرار
+    final uniqueItems = response.map((e) => e['id']).toSet();
+    return uniqueItems.length;
+  }
+
+  ///////////////////////////////////////////////////////////////////////////////////
+  Future<int> getPreviousDonationsCount() async {
+    final userId = Supabase.instance.client.auth.currentUser!.id;
+
+    final response = await Supabase.instance.client
+        .from('user_items')
+        .select('''
+        id,
+        requests!inner (
+          status
+        )
+      ''')
+        .eq('user_id', userId)
+        .eq('requests.status', 'delivered');
+
+    final uniqueItems = response.map((e) => e['id']).toSet();
+    return uniqueItems.length;
+  }
 }

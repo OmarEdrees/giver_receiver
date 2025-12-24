@@ -136,7 +136,7 @@ class ChatssDonorScreen extends StatelessWidget {
                                 child: ChatRecipientScreen(
                                   chatId: chatId,
                                   recipientName: recipientName,
-                                  recipientImage: recipientImage,
+                                  //recipientImage: recipientImage,
                                 ),
                               ),
                             ),
@@ -193,6 +193,7 @@ class ChatssDonorScreen extends StatelessWidget {
                               height: 65,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
+                                color: Colors.grey.shade600,
                                 image: DecorationImage(
                                   image: recipientImage != null
                                       ? NetworkImage(recipientImage)

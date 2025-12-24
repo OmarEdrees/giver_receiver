@@ -10,13 +10,13 @@ import 'package:chat_bubbles/chat_bubbles.dart';
 class ChatRecipientScreen extends StatefulWidget {
   final String chatId;
   final String recipientName;
-  final String recipientImage;
+  //final String recipientImage;
 
   const ChatRecipientScreen({
     super.key,
     required this.chatId,
     required this.recipientName,
-    required this.recipientImage,
+    //required this.recipientImage,
   });
 
   @override
@@ -45,7 +45,8 @@ class _ChatRecipientScreenState extends State<ChatRecipientScreen> {
           children: [
             CircleAvatar(
               radius: 22,
-              backgroundImage: NetworkImage(widget.recipientImage),
+              backgroundColor: Colors.grey.shade600,
+              //backgroundImage: NetworkImage(widget.recipientImage),
             ),
             SizedBox(width: 12),
             Text(
@@ -129,17 +130,25 @@ class _ChatRecipientScreenState extends State<ChatRecipientScreen> {
             child: Row(
               children: [
                 Expanded(
-                  child: TextField(
-                    controller: controller,
-                    decoration: const InputDecoration(
-                      hintText: 'Type message...',
-                      border: OutlineInputBorder(),
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade300,
+                      borderRadius: BorderRadius.circular(25),
+                    ),
+                    child: TextFormField(
+                      controller: controller,
+
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintText: "enter your message",
+                      ),
                     ),
                   ),
                 ),
-                IconButton(
-                  icon: const Icon(Icons.send),
-                  onPressed: () {
+                const SizedBox(width: 10),
+                GestureDetector(
+                  onTap: () {
                     if (controller.text.trim().isEmpty) return;
 
                     context.read<UserChatCubit>().sendMessage(
@@ -148,6 +157,11 @@ class _ChatRecipientScreenState extends State<ChatRecipientScreen> {
 
                     controller.clear();
                   },
+                  child: CircleAvatar(
+                    radius: 24,
+                    backgroundColor: AppColors().primaryColor,
+                    child: const Icon(Icons.send, color: Colors.white),
+                  ),
                 ),
               ],
             ),
