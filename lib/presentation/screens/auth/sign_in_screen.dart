@@ -20,259 +20,270 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: Container(
-            width: double.infinity,
-            color: Colors.white,
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: SizeConfig.width * 0.04,
-                vertical: SizeConfig.width * 0.07,
-              ),
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  minHeight: MediaQuery.of(context).size.height - 77,
+      body: Directionality(
+        textDirection: TextDirection.rtl,
+        child: SingleChildScrollView(
+          child: SafeArea(
+            child: Container(
+              width: double.infinity,
+              color: Colors.white,
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: SizeConfig.width * 0.04,
+                  vertical: SizeConfig.width * 0.07,
                 ),
-                child: IntrinsicHeight(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Center(
-                        child: Image.asset(
-                          "assets/images/logo_app1.png",
-                          fit: BoxFit.contain,
-                          height: SizeConfig.width * 0.6,
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: MediaQuery.of(context).size.height - 77,
+                  ),
+                  child: IntrinsicHeight(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Center(
+                          child: Image.asset(
+                            "assets/images/logo_app1.png",
+                            fit: BoxFit.contain,
+                            height: SizeConfig.width * 0.6,
+                          ),
+                          // CircleAvatar(
+                          //   backgroundColor: Colors.grey[200],
+                          //   radius: 80,
+                          //   //backgroundImage: AssetImage('assets/images/logo_app.jpeg'),
+                          //   child: Icon(
+                          //     Icons.camera_alt,
+                          //     size: 40,
+                          //     color: AppColors().primaryColor,
+                          //   ),
+                          // ),
                         ),
-                        // CircleAvatar(
-                        //   backgroundColor: Colors.grey[200],
-                        //   radius: 80,
-                        //   //backgroundImage: AssetImage('assets/images/logo_app.jpeg'),
-                        //   child: Icon(
-                        //     Icons.camera_alt,
-                        //     size: 40,
-                        //     color: AppColors().primaryColor,
-                        //   ),
-                        // ),
-                      ),
-                      Text(
-                        'Welcome!',
-                        style: TextStyle(
-                          letterSpacing: -0.5,
-                          fontSize: 30,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
+                        Text(
+                          'مرحبا!',
+                          style: TextStyle(
+                            letterSpacing: -0.5,
+                            fontSize: 30,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 2),
-                      Text(
-                        'Sign in to continue',
-                        style: TextStyle(fontSize: 14, color: Colors.grey[600]),
-                      ),
-                      SizedBox(height: 15),
-                      Form(
-                        key: _formKey,
-                        child: Column(
-                          children: [
-                            CustomTextFormField(
-                              focusNode: emailFocus,
-                              validator: emailValidator,
-                              controller: emailController,
-                              hintText: 'Enter your email',
-                              icon: Icons.email,
-                            ),
-                            const SizedBox(height: 15),
-                            CustomTextFormField(
-                              focusNode: passFocus,
-                              validator: passwordValidator,
-                              controller: passController,
-                              hintText: 'Enter password',
-                              icon: Icons.lock,
-                              isPassword: true,
-                            ),
-                            SizedBox(height: 10),
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.check_circle,
-                                  color: AppColors().primaryColor,
-                                ),
-                                SizedBox(width: 5),
-                                Text(
-                                  'Remember me',
-                                  style: TextStyle(fontSize: 13),
-                                ),
-                                Spacer(),
-                                Text(
-                                  'forget password?',
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    color: AppColors().primaryColor,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 20),
-                            GestureDetector(
-                              onTap: () async {
-                                if (_isLoading) return; // منع النقر المتكرر
-                                if (_formKey.currentState!.validate()) {
-                                  if (!mounted) return;
-                                  setState(
-                                    () => _isLoading = true,
-                                  ); // تشغيل التحميل
-                                  try {
-                                    await SupabaseServices().signInUser(
-                                      context: context,
-                                      email: emailController.text,
-                                      password: passController.text,
-                                    );
-                                  } catch (e) {
-                                    // ❌ في حال حدوث خطأ
-                                    if (!context.mounted) return;
-                                    print(e);
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text('❌ Error: $e'),
-                                        backgroundColor: Colors.red,
-                                      ),
-                                    );
-                                  } finally {
-                                    if (!mounted) return;
-                                    setState(
-                                      () => _isLoading = false,
-                                    ); // إيقاف التحميل مهما كانت النتيجة
-                                  }
-                                }
-                              },
-
-                              child: Container(
-                                width: double.infinity,
-                                height: 50,
-                                decoration: BoxDecoration(
-                                  color: AppColors().primaryColor,
-                                  borderRadius: BorderRadius.circular(25),
-                                ),
-                                child: Center(
-                                  child: _isLoading
-                                      ? const SizedBox(
-                                          width: 24,
-                                          height: 24,
-                                          child: CircularProgressIndicator(
-                                            color: Colors.white,
-                                            strokeWidth: 3,
-                                          ),
-                                        )
-                                      : const Text(
-                                          'Sign in',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                ),
+                        SizedBox(height: 2),
+                        Text(
+                          'سجل الدخول للمتابعة',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                        SizedBox(height: 15),
+                        Form(
+                          key: _formKey,
+                          child: Column(
+                            children: [
+                              CustomTextFormField(
+                                focusNode: emailFocus,
+                                validator: emailValidator,
+                                controller: emailController,
+                                hintText: 'ادخل بريدك الالكتروني',
+                                icon: Icons.email,
                               ),
-                            ),
-                            SizedBox(height: 20),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                  child: Container(
-                                    height: 1,
-                                    color: Colors.grey[350],
+                              const SizedBox(height: 15),
+                              CustomTextFormField(
+                                focusNode: passFocus,
+                                validator: passwordValidator,
+                                controller: passController,
+                                hintText: 'ادخل كلمة المرور',
+                                icon: Icons.lock,
+                                isPassword: true,
+                              ),
+                              SizedBox(height: 10),
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.check_circle,
+                                    color: AppColors().primaryColor,
                                   ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 10,
+                                  SizedBox(width: 5),
+                                  Text(
+                                    'تذكرني',
+                                    style: TextStyle(fontSize: 13),
                                   ),
-                                  child: Center(
-                                    child: Text(
-                                      'or continue with',
-                                      style: TextStyle(color: Colors.grey[600]),
+                                  Spacer(),
+                                  Text(
+                                    'نسيت كلمة المرور؟',
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      color: AppColors().primaryColor,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                ),
-                                Expanded(
-                                  child: Container(
-                                    height: 1,
-                                    color: Colors.grey[350],
+                                ],
+                              ),
+                              SizedBox(height: 20),
+                              GestureDetector(
+                                onTap: () async {
+                                  if (_isLoading) return; // منع النقر المتكرر
+                                  if (_formKey.currentState!.validate()) {
+                                    if (!mounted) return;
+                                    setState(
+                                      () => _isLoading = true,
+                                    ); // تشغيل التحميل
+                                    try {
+                                      await SupabaseServices().signInUser(
+                                        context: context,
+                                        email: emailController.text,
+                                        password: passController.text,
+                                      );
+                                    } catch (e) {
+                                      // ❌ في حال حدوث خطأ
+                                      if (!context.mounted) return;
+                                      print(e);
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        SnackBar(
+                                          content: Text('❌ Error: $e'),
+                                          backgroundColor: Colors.red,
+                                        ),
+                                      );
+                                    } finally {
+                                      if (!mounted) return;
+                                      setState(
+                                        () => _isLoading = false,
+                                      ); // إيقاف التحميل مهما كانت النتيجة
+                                    }
+                                  }
+                                },
+
+                                child: Container(
+                                  width: double.infinity,
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                    color: AppColors().primaryColor,
+                                    borderRadius: BorderRadius.circular(25),
+                                  ),
+                                  child: Center(
+                                    child: _isLoading
+                                        ? const SizedBox(
+                                            width: 24,
+                                            height: 24,
+                                            child: CircularProgressIndicator(
+                                              color: Colors.white,
+                                              strokeWidth: 3,
+                                            ),
+                                          )
+                                        : const Text(
+                                            'تسجيل الدخول',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
                                   ),
                                 ),
-                              ],
-                            ),
-                            SizedBox(height: 20),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                SocialButton(
-                                  imagePath: 'assets/images/facebook.png',
-                                  onTap: () {
-                                    print("Facebook tapped");
-                                  },
-                                ),
-                                SocialButton(
-                                  imagePath: 'assets/images/google.png',
-                                  onTap: () {
-                                    print("Google tapped");
-                                  },
-                                ),
+                              ),
+                              SizedBox(height: 20),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Expanded(
+                                    child: Container(
+                                      height: 1,
+                                      color: Colors.grey[350],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 10,
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        'أو المتابعة عبر',
+                                        style: TextStyle(
+                                          color: Colors.grey[600],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Container(
+                                      height: 1,
+                                      color: Colors.grey[350],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 20),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  SocialButton(
+                                    imagePath: 'assets/images/facebook.png',
+                                    onTap: () {
+                                      print("Facebook tapped");
+                                    },
+                                  ),
+                                  SocialButton(
+                                    imagePath: 'assets/images/google.png',
+                                    onTap: () {
+                                      print("Google tapped");
+                                    },
+                                  ),
 
-                                SocialButton(
-                                  imagePath: 'assets/images/Twitter.png',
-                                  onTap: () {
-                                    print("Twitter tapped");
-                                  },
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      Spacer(),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "You don't have an account?",
-                            style: TextStyle(
-                              fontSize: 12.5,
-                              color: Colors.grey,
-                            ),
+                                  SocialButton(
+                                    imagePath: 'assets/images/Twitter.png',
+                                    onTap: () {
+                                      print("Twitter tapped");
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
+                        ),
+                        SizedBox(height: 90),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "ليس لديك حساب؟",
+                              style: TextStyle(
+                                fontSize: 12.5,
+                                color: Colors.grey,
+                              ),
+                            ),
 
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => SignInScreen(),
-                                ),
-                              );
-                            },
-                            child: GestureDetector(
+                            GestureDetector(
                               onTap: () {
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => SignUpScreen(),
+                                    builder: (context) => SignInScreen(),
                                   ),
                                 );
                               },
-                              child: Text(
-                                ' Sign up',
-                                style: TextStyle(
-                                  fontSize: 12.5,
-                                  color: AppColors().primaryColor,
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => SignUpScreen(),
+                                    ),
+                                  );
+                                },
+                                child: Text(
+                                  ' إنشاء حساب',
+                                  style: TextStyle(
+                                    fontSize: 12.5,
+                                    color: AppColors().primaryColor,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

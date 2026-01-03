@@ -16,7 +16,7 @@ class _ChatsScreenState extends State<ChatsScreen> {
     return Scaffold(
       body: Column(
         children: [
-          CustomHeader(icon: Icons.chat, title: 'Chats'),
+          CustomHeader(icon: Icons.chat, title: 'الدردشات'),
           SizedBox(height: 15),
           Expanded(
             child: Container(
@@ -35,7 +35,7 @@ class _ChatsScreenState extends State<ChatsScreen> {
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: Colors.grey[300],
-                            hintText: 'Search for items',
+                            hintText: 'البحث عن دردشات',
                             prefixIcon: Icon(
                               Icons.search,
                               color: AppColors().primaryColor,

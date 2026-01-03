@@ -10,13 +10,13 @@ import 'package:chat_bubbles/chat_bubbles.dart';
 class ChatRecipientScreen extends StatefulWidget {
   final String chatId;
   final String recipientName;
-  final String recipientImage;
+  //final String recipientImage;
 
   const ChatRecipientScreen({
     super.key,
     required this.chatId,
     required this.recipientName,
-    required this.recipientImage,
+    //required this.recipientImage,
   });
 
   @override
@@ -46,7 +46,7 @@ class _ChatRecipientScreenState extends State<ChatRecipientScreen> {
             CircleAvatar(
               radius: 22,
               backgroundColor: Colors.grey.shade600,
-              backgroundImage: NetworkImage(widget.recipientImage),
+              // backgroundImage: NetworkImage(widget.recipientImage),
             ),
             SizedBox(width: 12),
             Text(
@@ -60,31 +60,31 @@ class _ChatRecipientScreenState extends State<ChatRecipientScreen> {
           ],
         ),
         actions: [
-          IconButton(
-            onPressed: () {
-              // ZegoServices.callWithZego(
-              // isVideoCall: false,
-              // userId: cubit.callUserId!,
-              // userName: cubit.callUserName!,
-              // );
-            },
-            icon: Icon(Icons.call, size: SizeConfig.width * 0.07),
-          ),
-          IconButton(
-            onPressed: () {
-              // ZegoServices.callWithZego(
-              // isVideoCall: true,
-              // userId: cubit.callUserId!,
-              // userName: cubit.callUserName!,
-              // );
-            },
-            icon: Icon(
-              color: Colors.white,
-              Icons.video_chat_outlined,
-              size: SizeConfig.width * 0.07,
-            ),
-          ),
-          // زر الإبلاغ
+          // IconButton(
+          //   onPressed: () {
+          //     // ZegoServices.callWithZego(
+          //     // isVideoCall: false,
+          //     // userId: cubit.callUserId!,
+          //     // userName: cubit.callUserName!,
+          //     // );
+          //   },
+          //   icon: Icon(Icons.call, size: SizeConfig.width * 0.07),
+          // ),
+          // IconButton(
+          //   onPressed: () {
+          //     // ZegoServices.callWithZego(
+          //     // isVideoCall: true,
+          //     // userId: cubit.callUserId!,
+          //     // userName: cubit.callUserName!,
+          //     // );
+          //   },
+          //   icon: Icon(
+          //     color: Colors.white,
+          //     Icons.video_chat_outlined,
+          //     size: SizeConfig.width * 0.07,
+          //   ),
+          // ),
+          ///// زر الإبلاغ
           BlocBuilder<UserChatCubit, ChatState>(
             builder: (context, state) {
               if (state is ChatLoaded && !state.isReported) {
@@ -176,7 +176,10 @@ class _ChatRecipientScreenState extends State<ChatRecipientScreen> {
                   children: [
                     Expanded(
                       child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 6,
+                        ),
                         decoration: BoxDecoration(
                           color: Colors.grey.shade300,
                           borderRadius: BorderRadius.circular(25),
@@ -185,7 +188,7 @@ class _ChatRecipientScreenState extends State<ChatRecipientScreen> {
                           controller: controller,
                           decoration: const InputDecoration(
                             border: InputBorder.none,
-                            hintText: "enter your message",
+                            hintText: "أدخل رسالتك",
                           ),
                         ),
                       ),

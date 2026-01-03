@@ -104,7 +104,7 @@ class _MyItemsCardState extends State<MyItemsCard> {
           child: ChatRecipientScreen(
             chatId: chatId,
             recipientName: otherName,
-            recipientImage: otherImage,
+            // recipientImage: otherImage,
           ),
         ),
       ),
@@ -116,6 +116,7 @@ class _MyItemsCardState extends State<MyItemsCard> {
     return Container(
       padding: const EdgeInsets.only(right: 15, left: 15, bottom: 10),
       decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey.shade400, width: 1),
         color: Colors.grey[200],
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
@@ -316,7 +317,7 @@ class _MyItemsCardState extends State<MyItemsCard> {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
-                  widget.isAvailable ? "Available" : 'UnAvailable',
+                  widget.isAvailable ? "متاح" : 'غير متاح',
                   style: TextStyle(
                     color: widget.isAvailable ? Colors.green : Colors.red,
                     fontWeight: FontWeight.bold,
@@ -376,7 +377,7 @@ class _MyItemsCardState extends State<MyItemsCard> {
               Expanded(
                 child: SaveButtonWidgetMyItems(
                   icon: Icons.edit,
-                  title: 'Edit',
+                  title: 'تعديل',
                   ontap: () async {
                     final result = await Navigator.push(
                       context,
@@ -399,7 +400,7 @@ class _MyItemsCardState extends State<MyItemsCard> {
               Expanded(
                 child: SaveButtonWidgetMyItems(
                   icon: Icons.delete,
-                  title: 'Delete',
+                  title: 'حذف',
                   ontap: () async {
                     final confirm = await showDialog(
                       context: context,
@@ -430,7 +431,7 @@ class _MyItemsCardState extends State<MyItemsCard> {
 
                               // ---------------- Title ----------------
                               Text(
-                                "Delete Item",
+                                "حذف العنصر",
                                 style: TextStyle(
                                   fontSize: 22,
                                   fontWeight: FontWeight.bold,
@@ -441,7 +442,7 @@ class _MyItemsCardState extends State<MyItemsCard> {
 
                               // ---------------- Content ----------------
                               Text(
-                                "Are you sure you want to delete this item? This action cannot be undone.",
+                                "هل أنت متأكد أنك تريد حذف هذا العنصر؟ لا يمكن التراجع عن هذا الإجراء.",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: 16,
@@ -471,7 +472,7 @@ class _MyItemsCardState extends State<MyItemsCard> {
                                       onPressed: () =>
                                           Navigator.pop(context, false),
                                       child: Text(
-                                        "Cancel",
+                                        "إلغاء",
                                         style: TextStyle(
                                           color: Colors.black87,
                                           fontSize: 16,
@@ -497,7 +498,7 @@ class _MyItemsCardState extends State<MyItemsCard> {
                                       onPressed: () =>
                                           Navigator.pop(context, true),
                                       child: Text(
-                                        "Delete",
+                                        "حذف",
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 16,
@@ -570,7 +571,7 @@ class _MyItemsCardState extends State<MyItemsCard> {
                       Expanded(
                         child: SaveButtonWidgetMyItems(
                           icon: Icons.chat_bubble,
-                          title: 'Open Chat Session',
+                          title: 'افتح جلسة الدردشة',
                           ontap: () async {
                             openDonorRecipientChat(
                               context: context,

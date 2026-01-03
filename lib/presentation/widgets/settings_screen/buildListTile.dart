@@ -7,11 +7,14 @@ Widget buildListTile({
   Widget? trailing,
   required VoidCallback onTap,
 }) {
-  return ListTile(
-    leading: Icon(icon, color: AppColors().primaryColor),
-    title: Text(title, style: const TextStyle(fontWeight: FontWeight.w500)),
-    trailing: trailing,
-    onTap: onTap,
+  return Directionality(
+    textDirection: TextDirection.rtl,
+    child: ListTile(
+      leading: Icon(icon, color: AppColors().primaryColor),
+      title: Text(title, style: const TextStyle(fontWeight: FontWeight.w500)),
+      trailing: trailing,
+      onTap: onTap,
+    ),
   );
 }
 

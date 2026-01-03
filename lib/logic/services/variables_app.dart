@@ -11,30 +11,27 @@ import 'package:image_picker/image_picker.dart';
 //////////////////////////////////////////////////////////////
 List<OnBoardingScreenWidget> steps = [
   OnBoardingScreenWidget(
-    title: 'Welcome to "Donor & Recipient"',
-    body:
-        'Share the things you no longer need with others safely and privately.',
+    title: 'مرحبا بكم في "الواهب & الموهوب"',
+    body: 'شارك الأشياء التي لم تعد بحاجة إليها مع الآخرين بأمان وبشكل خاص.',
     image: "assets/lottie/Gift premium animation.json",
   ),
 
   OnBoardingScreenWidget(
-    title: "Give What You Have",
-    body:
-        "Create a post for anything you want to give away, and let others see it anonymously.",
+    title: "أعط ما لديك",
+    body: "أنشئ منشورًا لأي شيء تريد التخلي عنه، ودع الآخرين يرونه بشكل مجهول.",
     image: "assets/lottie/Invite Friends or Share with Friends.json",
   ),
 
   OnBoardingScreenWidget(
-    title: "Get What You Need",
+    title: "احصل على ما تحتاجه",
     body:
-        "If someone is interested in what you shared, they can contact the admin to receive it — without revealing identities.",
+        "إذا كان شخص ما مهتمًا بما شاركته، فيمكنه الاتصال بالمسؤول لاستلامه - دون الكشف عن هويته.",
     image: "assets/lottie/Let's chat!.json",
   ),
 
   OnBoardingScreenWidget(
-    title: "Stay Private & Safe",
-    body:
-        "Your identity is never revealed. Share and receive items with confidence.",
+    title: "ابق خاصًا وآمنًا",
+    body: "لم يتم الكشف عن هويتك أبدا. شارك واستقبل العناصر بثقة.",
     image: "assets/lottie/Data Protection.json",
   ),
 ];
@@ -169,7 +166,7 @@ String formatTime(String? dateTimeString) {
 String userRole = '';
 
 void onSignUpSuccess(BuildContext context) {
-  if (userRole == 'Donor') {
+  if (userRole == 'الواهب') {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => const MainBottomNavDonor()),

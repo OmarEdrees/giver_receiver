@@ -30,8 +30,8 @@ class _MainBottomNavDonorState extends State<MainBottomNavDonor>
       body: _pages[_selectedIndex],
 
       bottomNavigationBar: MotionTabBar(
-        initialSelectedTab: 'Items',
-        labels: const ["Items", "My Items", "Chats", "Settings"],
+        initialSelectedTab: 'العناصر',
+        labels: const ["العناصر", "عناصري", "الدردشات", "الإعدادات"],
         icons: const [
           Icons.description_outlined,
           Icons.description_outlined,

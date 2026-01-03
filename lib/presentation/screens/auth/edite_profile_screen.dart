@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:giver_receiver/logic/services/Donor/GetCurrentUserData/get_current_user_data.dart';
 import 'package:giver_receiver/logic/services/colors_app.dart';
 import 'package:giver_receiver/logic/services/variables_app.dart';
+import 'package:giver_receiver/presentation/widgets/CustomHeader/custom_header.dart';
 import 'package:giver_receiver/presentation/widgets/customTextFields.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -47,96 +48,96 @@ class _EditeProfileScreenState extends State<EditeProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text('Edite Profile'),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                // صورة البروفايل
-                GestureDetector(
-                  onTap: _pickImage,
-                  child: CircleAvatar(
-                    radius: 75,
-                    backgroundImage: selectedImage != null
-                        ? FileImage(selectedImage!)
-                        : profileData?['image'] != null
-                        ? NetworkImage(profileData!['image'])
-                        : null,
-                    child:
-                        selectedImage == null && profileData?['image'] == null
-                        ? Icon(
-                            Icons.camera_alt,
-                            size: 40,
-                            color: Colors.grey[700],
-                          )
-                        : null,
-                  ),
-                ),
-                const SizedBox(height: 30),
-                CustomTextFormField(
-                  focusNode: editProfileNameFocus,
-                  controller: editeProfileName,
-                  hintText: 'Full Name',
-                  icon: Icons.person,
-                  validator: addChildNameValidator,
-                ),
-                const SizedBox(height: 20),
-                CustomTextFormField(
-                  focusNode: editProfileEmailFocus,
-                  controller: editProfileEmail,
-                  hintText: 'Email',
-                  icon: Icons.email,
-                  validator: emailValidator,
-                ),
-                const SizedBox(height: 20),
-                CustomTextFormField(
-                  keyboardType: TextInputType.number,
-                  focusNode: editProfilePhoneFocus,
-                  controller: editProfilePhone,
-                  hintText: 'Phone',
-                  icon: Icons.phone,
-                  validator: addChildNameValidator,
-                ),
-                const SizedBox(height: 20),
-                GestureDetector(
-                  onTap: () async {
-                    await currentUserData.updateProfile(context);
-                    Navigator.pop(context, true);
-                  },
-                  child: Container(
-                    width: double.infinity,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: AppColors().primaryColor,
-                      borderRadius: BorderRadius.circular(25),
-                    ),
-                    child: Center(
-                      child: Text(
-                        'Edit',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+      body: Directionality(
+        textDirection: TextDirection.rtl,
+        child: Column(
+          children: [
+            CustomHeader(icon: Icons.person, title: 'تعديل الملف الشخصي'),
+            SizedBox(height: 5),
+            Container(
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        // صورة البروفايل
+                        GestureDetector(
+                          onTap: _pickImage,
+                          child: CircleAvatar(
+                            radius: 75,
+                            backgroundImage: selectedImage != null
+                                ? FileImage(selectedImage!)
+                                : profileData?['image'] != null
+                                ? NetworkImage(profileData!['image'])
+                                : null,
+                            child:
+                                selectedImage == null &&
+                                    profileData?['image'] == null
+                                ? Icon(
+                                    Icons.camera_alt,
+                                    size: 40,
+                                    color: Colors.grey[700],
+                                  )
+                                : null,
+                          ),
                         ),
-                      ),
+                        const SizedBox(height: 30),
+                        CustomTextFormField(
+                          focusNode: editProfileNameFocus,
+                          controller: editeProfileName,
+                          hintText: "الاسم الكامل",
+                          icon: Icons.person,
+                          validator: addChildNameValidator,
+                        ),
+                        const SizedBox(height: 20),
+                        CustomTextFormField(
+                          focusNode: editProfileEmailFocus,
+                          controller: editProfileEmail,
+                          hintText: 'البريد الالكتروني',
+                          icon: Icons.email,
+                          validator: emailValidator,
+                        ),
+                        const SizedBox(height: 20),
+                        CustomTextFormField(
+                          keyboardType: TextInputType.number,
+                          focusNode: editProfilePhoneFocus,
+                          controller: editProfilePhone,
+                          hintText: 'رقم الهاتف',
+                          icon: Icons.phone,
+                          validator: addChildNameValidator,
+                        ),
+                        const SizedBox(height: 20),
+                        GestureDetector(
+                          onTap: () async {
+                            await currentUserData.updateProfile(context);
+                            Navigator.pop(context, true);
+                          },
+                          child: Container(
+                            width: double.infinity,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              color: AppColors().primaryColor,
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                            child: Center(
+                              child: Text(
+                                'تعديل',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-              ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );

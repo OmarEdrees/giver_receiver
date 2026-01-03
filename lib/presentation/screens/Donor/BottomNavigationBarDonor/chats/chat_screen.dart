@@ -10,13 +10,13 @@ import 'package:chat_bubbles/chat_bubbles.dart';
 class ChatDonorScreen extends StatefulWidget {
   final String chatId;
   final String recipientName;
-  final String recipientImage;
+  //final String recipientImage;
 
   const ChatDonorScreen({
     super.key,
     required this.chatId,
     required this.recipientName,
-    required this.recipientImage,
+    // required this.recipientImage,
   });
 
   @override
@@ -60,100 +60,103 @@ class _ChatDonorScreenState extends State<ChatDonorScreen> {
           ],
         ),
         actions: [
-          IconButton(
-            onPressed: () {
-              // ZegoServices.callWithZego(
-              //   isVideoCall: false,
-              //   userId: cubit.callUserId!,
-              //   userName: cubit.callUserName!,
-              // );
-            },
-            icon: Icon(Icons.call, size: SizeConfig.width * 0.07),
-          ),
-          IconButton(
-            onPressed: () {
-              // ZegoServices.callWithZego(
-              //   isVideoCall: true,
-              //   userId: cubit.callUserId!,
-              //   userName: cubit.callUserName!,
-              // );
-            },
-            icon: Icon(
-              color: Colors.white,
-              Icons.video_chat_outlined,
-              size: SizeConfig.width * 0.07,
-            ),
-          ),
+          // IconButton(
+          //   onPressed: () {
+          //     // ZegoServices.callWithZego(
+          //     //   isVideoCall: false,
+          //     //   userId: cubit.callUserId!,
+          //     //   userName: cubit.callUserName!,
+          //     // );
+          //   },
+          //   icon: Icon(Icons.call, size: SizeConfig.width * 0.07),
+          // ),
+          // IconButton(
+          //   onPressed: () {
+          //     // ZegoServices.callWithZego(
+          //     //   isVideoCall: true,
+          //     //   userId: cubit.callUserId!,
+          //     //   userName: cubit.callUserName!,
+          //     // );
+          //   },
+          //   icon: Icon(
+          //     color: Colors.white,
+          //     Icons.video_chat_outlined,
+          //     size: SizeConfig.width * 0.07,
+          //   ),
+          // ),
         ],
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: BlocBuilder<UserChatCubit, ChatState>(
-              builder: (context, state) {
-                if (state is ChatLoading) {
-                  return const Center(child: CircularProgressIndicator());
-                }
+      body: Directionality(
+        textDirection: TextDirection.rtl,
+        child: Column(
+          children: [
+            Expanded(
+              child: BlocBuilder<UserChatCubit, ChatState>(
+                builder: (context, state) {
+                  if (state is ChatLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
 
-                if (state is ChatLoaded) {
-                  return ListView.builder(
-                    padding: const EdgeInsets.all(12),
-                    itemCount: state.messages.length,
-                    itemBuilder: (context, index) {
-                      final msg = state.messages[index];
-                      final isMe = msg['id'] == myId;
+                  if (state is ChatLoaded) {
+                    return ListView.builder(
+                      padding: const EdgeInsets.all(12),
+                      itemCount: state.messages.length,
+                      itemBuilder: (context, index) {
+                        final msg = state.messages[index];
+                        final isMe = msg['id'] == myId;
 
-                      return BubbleSpecialThree(
-                        isSender: isMe,
-                        text: msg['message'],
-                        color: isMe
-                            ? AppColors().primaryColor
-                            : Colors.grey.shade300,
-                        tail: true,
-                        textStyle: TextStyle(
-                          color: isMe ? Colors.white : Colors.black,
-                          fontSize: 16,
-                        ),
-                      );
-                    },
-                  );
-                }
+                        return BubbleSpecialThree(
+                          isSender: isMe,
+                          text: msg['message'],
+                          color: isMe
+                              ? AppColors().primaryColor
+                              : Colors.grey.shade300,
+                          tail: true,
+                          textStyle: TextStyle(
+                            color: isMe ? Colors.white : Colors.black,
+                            fontSize: 16,
+                          ),
+                        );
+                      },
+                    );
+                  }
 
-                return const SizedBox();
-              },
+                  return const SizedBox();
+                },
+              ),
             ),
-          ),
 
-          // Input
-          Padding(
-            padding: const EdgeInsets.all(8),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: controller,
-                    decoration: const InputDecoration(
-                      hintText: 'Type message...',
-                      border: OutlineInputBorder(),
+            // Input
+            Padding(
+              padding: const EdgeInsets.all(8),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: controller,
+                      decoration: const InputDecoration(
+                        hintText: 'اكتب الرسالة...',
+                        border: OutlineInputBorder(),
+                      ),
                     ),
                   ),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.send),
-                  onPressed: () {
-                    if (controller.text.trim().isEmpty) return;
+                  IconButton(
+                    icon: const Icon(Icons.send),
+                    onPressed: () {
+                      if (controller.text.trim().isEmpty) return;
 
-                    context.read<UserChatCubit>().sendMessage(
-                      controller.text.trim(),
-                    );
+                      context.read<UserChatCubit>().sendMessage(
+                        controller.text.trim(),
+                      );
 
-                    controller.clear();
-                  },
-                ),
-              ],
+                      controller.clear();
+                    },
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

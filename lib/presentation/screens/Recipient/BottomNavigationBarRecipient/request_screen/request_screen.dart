@@ -84,7 +84,7 @@ class _MyRequestsScreenState extends State<MyRequestsScreen> {
 
               // ---------------- Title ----------------
               Text(
-                "Delete Item",
+                "حذف العنصر",
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
 
@@ -92,7 +92,7 @@ class _MyRequestsScreenState extends State<MyRequestsScreen> {
 
               // ---------------- Content ----------------
               Text(
-                "Are you sure you want to delete this item? This action cannot be undone.",
+                "هل أنت متأكد أنك تريد حذف هذا العنصر؟ لا يمكن التراجع عن هذا الإجراء.",
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 16, color: Colors.grey[600]),
               ),
@@ -114,7 +114,7 @@ class _MyRequestsScreenState extends State<MyRequestsScreen> {
                       ),
                       onPressed: () => Navigator.pop(context, false),
                       child: Text(
-                        "Cancel",
+                        "إلغاء",
                         style: TextStyle(
                           color: Colors.black87,
                           fontSize: 16,
@@ -139,7 +139,7 @@ class _MyRequestsScreenState extends State<MyRequestsScreen> {
                       },
 
                       child: Text(
-                        "Delete",
+                        "حذف",
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 16,
@@ -162,285 +162,308 @@ class _MyRequestsScreenState extends State<MyRequestsScreen> {
     final primary = AppColors().primaryColor;
 
     return Scaffold(
-      body: Column(
-        children: [
-          const CustomHeader(
-            icon: Icons.volunteer_activism_outlined,
-            title: "Requests",
-          ),
-          const SizedBox(height: 15),
+      body: Directionality(
+        textDirection: TextDirection.rtl,
+        child: Column(
+          children: [
+            const CustomHeader(
+              icon: Icons.volunteer_activism_outlined,
+              title: "الطلبات",
+            ),
+            const SizedBox(height: 15),
 
-          // ------------------ البحث + الفلترة ------------------
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: Row(
-              children: [
-                // البحث
-                Expanded(
-                  flex: 9,
-                  child: TextFormField(
-                    controller: requestScreenSearch,
-                    cursorColor: primary,
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.grey[200],
-                      hintText: 'Search for Request',
-                      prefixIcon: Icon(Icons.search, color: primary),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide.none,
+            // ------------------ البحث + الفلترة ------------------
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Row(
+                children: [
+                  // البحث
+                  Expanded(
+                    flex: 9,
+                    child: Container(
+                      decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15),
+                        border: Border.all(
+                          color: Colors.grey.shade400,
+                          width: 1,
+                        ),
                       ),
-                    ),
-                    onChanged: (value) {
-                      final search = value.toLowerCase();
-                      filteredRequests = myRequests.where((req) {
-                        final reason = req["reason"].toString().toLowerCase();
-                        return reason.contains(search);
-                      }).toList();
-                      setState(() {});
-                    },
-                  ),
-                ),
-
-                const SizedBox(width: 10),
-
-                // الفلترة بالStatus
-                Expanded(
-                  flex: 5,
-                  child: Container(
-                    height: 55,
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton<String>(
-                        value: selectedStatus,
-                        icon: Icon(Icons.filter_list, color: primary),
-                        items: const [
-                          DropdownMenuItem(value: "All", child: Text("All")),
-                          DropdownMenuItem(
-                            value: "pending",
-                            child: Text("pending"),
+                      child: TextFormField(
+                        controller: requestScreenSearch,
+                        cursorColor: primary,
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.grey[200],
+                          hintText: 'البحث عن الطلب',
+                          prefixIcon: Icon(Icons.search, color: primary),
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.circular(15),
                           ),
-                          DropdownMenuItem(
-                            value: "approve",
-                            child: Text("Approved"),
-                          ),
-                          DropdownMenuItem(
-                            value: "reject",
-                            child: Text("Rejected"),
-                          ),
-                        ],
+                        ),
                         onChanged: (value) {
-                          selectedStatus = value!;
-                          filterRequests(); // ← تحديث القائمة حسب الحالة
+                          final search = value.toLowerCase();
+                          filteredRequests = myRequests.where((req) {
+                            final reason = req["reason"]
+                                .toString()
+                                .toLowerCase();
+                            return reason.contains(search);
+                          }).toList();
+                          setState(() {});
                         },
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ),
 
-          const SizedBox(height: 10),
+                  const SizedBox(width: 10),
 
-          // ------------------ قائمة الطلبات ------------------
-          Expanded(
-            child: isLoading
-                ? const Center(child: CircularProgressIndicator())
-                : filteredRequests.isEmpty
-                ? const Center(
-                    child: Text(
-                      "No requests found",
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  )
-                : ListView.builder(
-                    padding: const EdgeInsets.all(15),
-                    itemCount: filteredRequests.length,
-                    itemBuilder: (context, index) {
-                      final req = filteredRequests[index];
-
-                      final imageUrl = req["attachment_url"];
-                      final reason = req["reason"];
-                      final timeAgo = formatTime(req["created_at"]);
-                      final status = req["status"] ?? "pending";
-
-                      Color statusColor = status == "approve"
-                          ? Colors.green
-                          : status == "reject"
-                          ? Colors.red
-                          : status == "delivered"
-                          ? Colors.blue
-                          : Colors.orange;
-
-                      return Container(
-                        padding: const EdgeInsets.all(15),
-                        margin: const EdgeInsets.only(bottom: 15),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(18),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 7,
-                              offset: Offset(0, 3),
+                  // الفلترة بالStatus
+                  Expanded(
+                    flex: 5,
+                    child: Container(
+                      height: 55,
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.grey.shade400,
+                          width: 1,
+                        ),
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          value: selectedStatus,
+                          icon: Icon(Icons.filter_list, color: primary),
+                          items: const [
+                            DropdownMenuItem(value: "All", child: Text("الكل")),
+                            DropdownMenuItem(
+                              value: "pending",
+                              child: Text("pending"),
+                            ),
+                            DropdownMenuItem(
+                              value: "approve",
+                              child: Text("Approved"),
+                            ),
+                            DropdownMenuItem(
+                              value: "reject",
+                              child: Text("Rejected"),
                             ),
                           ],
+                          onChanged: (value) {
+                            selectedStatus = value!;
+                            filterRequests(); // ← تحديث القائمة حسب الحالة
+                          },
                         ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // ----------------- الوقت + الحالة -----------------
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 12,
-                                    vertical: 6,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: statusColor.withOpacity(0.15),
-                                    borderRadius: BorderRadius.circular(12),
-                                    border: Border.all(
-                                      color: statusColor,
-                                      width: 1.2,
-                                    ),
-                                  ),
-                                  child: Text(
-                                    status,
-                                    style: TextStyle(
-                                      color: statusColor,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 12,
-                                    vertical: 6,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: AppColors().primaryColor,
-                                    borderRadius: BorderRadius.circular(25),
-                                  ),
-                                  child: Text(
-                                    timeAgo,
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 11,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 10),
+
+            // ------------------ قائمة الطلبات ------------------
+            Expanded(
+              child: isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : filteredRequests.isEmpty
+                  ? const Center(
+                      child: Text(
+                        "لم يتم العثور على طلبات",
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    )
+                  : ListView.builder(
+                      padding: const EdgeInsets.all(15),
+                      itemCount: filteredRequests.length,
+                      itemBuilder: (context, index) {
+                        final req = filteredRequests[index];
+
+                        final imageUrl = req["attachment_url"];
+                        final reason = req["reason"];
+                        final timeAgo = formatTime(req["created_at"]);
+                        final status = req["status"] ?? "pending";
+
+                        Color statusColor = status == "approve"
+                            ? Colors.green
+                            : status == "reject"
+                            ? Colors.red
+                            : status == "delivered"
+                            ? Colors.blue
+                            : Colors.orange;
+
+                        return Container(
+                          padding: const EdgeInsets.all(15),
+                          margin: const EdgeInsets.only(bottom: 15),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.grey.shade400,
+                              width: 1,
                             ),
-
-                            const SizedBox(height: 15),
-
-                            // ----------------- السبب -----------------
-                            Text(
-                              reason,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black87,
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(18),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black12,
+                                blurRadius: 7,
+                                offset: Offset(0, 3),
                               ),
-                            ),
-
-                            const SizedBox(height: 15),
-
-                            // ----------------- الصورة مع طبقة تعتيم + زر حذف -----------------
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(12),
-                              child: Stack(
+                            ],
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // ----------------- الوقت + الحالة -----------------
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  // الصورة
-                                  imageUrl != null
-                                      ? Image.network(
-                                          imageUrl,
-                                          height: 200,
-                                          width: double.infinity,
-                                          fit: BoxFit.cover,
-                                        )
-                                      : Container(
-                                          height: 200,
-                                          width: double.infinity,
-                                          color: Colors.grey[300],
-                                          child: const Icon(
-                                            Icons.image_not_supported,
-                                            size: 40,
-                                            color: Colors.grey,
-                                          ),
-                                        ),
-
-                                  // طبقة التعتيم
                                   Container(
-                                    height: 200,
-                                    width: double.infinity,
-                                    color: Colors.black.withOpacity(0.35),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                      vertical: 6,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: statusColor.withOpacity(0.15),
+                                      borderRadius: BorderRadius.circular(12),
+                                      border: Border.all(
+                                        color: statusColor,
+                                        width: 1.2,
+                                      ),
+                                    ),
+                                    child: Text(
+                                      status,
+                                      style: TextStyle(
+                                        color: statusColor,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                                   ),
-
-                                  // زر الحذف
-                                  Positioned(
-                                    top: 10,
-                                    left: 10,
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        confirmDelete(req["id"]);
-                                      },
-                                      child: Container(
-                                        width: 40,
-                                        height: 40,
-                                        decoration: BoxDecoration(
-                                          color: const Color.fromARGB(
-                                            255,
-                                            243,
-                                            227,
-                                            227,
-                                          ),
-                                          shape: BoxShape.circle,
-                                          border: Border.all(
-                                            color: const Color.fromARGB(
-                                              255,
-                                              185,
-                                              17,
-                                              5,
-                                            ),
-                                            width: 1.7,
-                                          ),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.black26,
-                                              blurRadius: 4,
-                                              offset: Offset(0, 2),
-                                            ),
-                                          ],
-                                        ),
-                                        child: const Icon(
-                                          Icons.delete,
-                                          color: Colors.red,
-                                          size: 22,
-                                        ),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                      vertical: 6,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: AppColors().primaryColor,
+                                      borderRadius: BorderRadius.circular(25),
+                                    ),
+                                    child: Text(
+                                      timeAgo,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 11,
                                       ),
                                     ),
                                   ),
                                 ],
                               ),
-                            ),
 
-                            const SizedBox(height: 15),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-          ),
-        ],
+                              const SizedBox(height: 15),
+
+                              // ----------------- السبب -----------------
+                              Text(
+                                reason,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black87,
+                                ),
+                              ),
+
+                              const SizedBox(height: 15),
+
+                              // ----------------- الصورة مع طبقة تعتيم + زر حذف -----------------
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                child: Stack(
+                                  children: [
+                                    // الصورة
+                                    imageUrl != null
+                                        ? Image.network(
+                                            imageUrl,
+                                            height: 200,
+                                            width: double.infinity,
+                                            fit: BoxFit.cover,
+                                          )
+                                        : Container(
+                                            height: 200,
+                                            width: double.infinity,
+                                            color: Colors.grey[300],
+                                            child: const Icon(
+                                              Icons.image_not_supported,
+                                              size: 40,
+                                              color: Colors.grey,
+                                            ),
+                                          ),
+
+                                    // طبقة التعتيم
+                                    Container(
+                                      height: 200,
+                                      width: double.infinity,
+                                      color: Colors.black.withOpacity(0.35),
+                                    ),
+
+                                    // زر الحذف
+                                    Positioned(
+                                      top: 10,
+                                      left: 10,
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          confirmDelete(req["id"]);
+                                        },
+                                        child: Container(
+                                          width: 40,
+                                          height: 40,
+                                          decoration: BoxDecoration(
+                                            color: const Color.fromARGB(
+                                              255,
+                                              243,
+                                              227,
+                                              227,
+                                            ),
+                                            shape: BoxShape.circle,
+                                            border: Border.all(
+                                              color: const Color.fromARGB(
+                                                255,
+                                                185,
+                                                17,
+                                                5,
+                                              ),
+                                              width: 1.7,
+                                            ),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.black26,
+                                                blurRadius: 4,
+                                                offset: Offset(0, 2),
+                                              ),
+                                            ],
+                                          ),
+                                          child: const Icon(
+                                            Icons.delete,
+                                            color: Colors.red,
+                                            size: 22,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                              const SizedBox(height: 15),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+            ),
+          ],
+        ),
       ),
     );
   }

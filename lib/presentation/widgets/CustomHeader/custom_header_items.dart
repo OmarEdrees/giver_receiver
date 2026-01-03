@@ -51,7 +51,7 @@ class CustomHeaderItems extends StatelessWidget {
 
             children: [
               Text(
-                'Hi $name',
+                'مرحبا $name',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: SizeConfig.height * 0.03,
@@ -60,7 +60,7 @@ class CustomHeaderItems extends StatelessWidget {
                 ),
               ),
               Text(
-                'Browse items and donate what you can',
+                'تصفح العناصر والتبرع بما تستطيع',
                 style: TextStyle(
                   color: Colors.white.withOpacity(0.8),
                   fontSize: SizeConfig.height * 0.0165,

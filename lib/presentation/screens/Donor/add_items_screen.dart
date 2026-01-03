@@ -572,183 +572,186 @@ class _AddItemsScreenState extends State<AddItemsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          CustomHeader(icon: Icons.add, title: 'Add New Item'),
+      body: Directionality(
+        textDirection: TextDirection.rtl,
+        child: Column(
+          children: [
+            CustomHeader(icon: Icons.add, title: 'إضافة عنصر جديد'),
 
-          Expanded(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(15),
-              child: Form(
-                key: controller.formKey, // Use controller's formKey
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // -------------------- IMAGE PICKER --------------------
-                    GestureDetector(
-                      onTap: () async {
-                        await controller.pickImages();
-                      },
-                      child: Container(
-                        width: double.infinity,
-                        height: 200,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          color: Colors.grey[300],
-                        ),
-                        child: controller.selectedImages.isEmpty
-                            ? Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.camera_alt,
-                                    size: 40,
-                                    color: Colors.grey[700],
-                                  ),
-                                  const SizedBox(height: 8),
-                                  const Text("Pick Image"),
-                                ],
-                              )
-                            : controller.buildImagesPreview(),
-                      ),
-                    ),
-
-                    const SizedBox(height: 10),
-                    const Text(
-                      "Choose a picture",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-
-                    // -------------------- TITLE --------------------
-                    CustomTextFormField(
-                      controller: addItemsTitle,
-                      hintText: "Title",
-                      icon: Icons.title,
-                      validator: validated,
-                      focusNode: addItemsTitleFocus,
-                    ),
-
-                    const SizedBox(height: 18),
-
-                    // -------------------- DESCRIPTION --------------------
-                    CustomTextFormField(
-                      maxLines: 5,
-                      controller: addItemsDescription,
-                      hintText: 'Description',
-                      icon: Icons.description,
-                      validator: validated,
-                      focusNode: addItemsDescriptionFocus,
-                    ),
-
-                    const SizedBox(height: 18),
-
-                    // -------------------- QUANTITY --------------------
-                    CustomTextFormField(
-                      controller: addItemsQuantity,
-                      hintText: "Quantity",
-                      icon: Icons.numbers,
-                      keyboardType: TextInputType.number,
-                      validator: validated,
-                      focusNode: addItemsQuantityFocus,
-                    ),
-
-                    const SizedBox(height: 18),
-
-                    // -------------------- CATEGORY --------------------
-                    controller.customDropdown(
-                      value: controller.selectedCategoryName,
-                      hint: "Select Category",
-                      items: controller.categories
-                          .map((c) => c['name'] as String)
-                          .toList(),
-                      onChanged: (value) {
-                        controller.selectCategory(value);
-                        setState(() {});
-                      },
-                    ),
-                    const SizedBox(height: 18),
-
-                    // -------------------- CONDITION --------------------
-                    controller.customDropdown(
-                      value: controller.selectedCondition,
-                      hint: "Select Condition",
-                      items: controller.itemConditions,
-                      onChanged: (value) {
-                        controller.selectCondition(value);
-                        setState(() {});
-                      },
-                    ),
-                    const SizedBox(height: 18),
-
-                    // -------------------- AVAILABLE SWITCH --------------------
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          "Is it available?",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(15),
+                child: Form(
+                  key: controller.formKey, // Use controller's formKey
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // -------------------- IMAGE PICKER --------------------
+                      GestureDetector(
+                        onTap: () async {
+                          await controller.pickImages();
+                        },
+                        child: Container(
+                          width: double.infinity,
+                          height: 200,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: Colors.grey[300],
                           ),
+                          child: controller.selectedImages.isEmpty
+                              ? Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.camera_alt,
+                                      size: 40,
+                                      color: Colors.grey[700],
+                                    ),
+                                    const SizedBox(height: 8),
+                                    const Text("اختر الصورة"),
+                                  ],
+                                )
+                              : controller.buildImagesPreview(),
                         ),
-                        Switch(
-                          value: controller.isAvailable,
-                          activeColor: AppColors().primaryColor,
-                          onChanged: (v) {
-                            controller.toggleAvailability(
-                              v,
-                            ); // يحدث القيمة داخل الـ controller
-                            setState(() {}); // يحدث واجهة المستخدم
-                          },
+                      ),
+
+                      const SizedBox(height: 10),
+                      const Text(
+                        "اختر صورة",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
                         ),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(height: 20),
 
-                    const SizedBox(height: 25),
+                      // -------------------- TITLE --------------------
+                      CustomTextFormField(
+                        controller: addItemsTitle,
+                        hintText: "عنوان",
+                        icon: Icons.title,
+                        validator: validated,
+                        focusNode: addItemsTitleFocus,
+                      ),
 
-                    // -------------------- SUBMIT --------------------
-                    GestureDetector(
-                      onTap: () async {
-                        if (!controller.formKey.currentState!.validate())
-                          return;
+                      const SizedBox(height: 18),
 
-                        final success = await controller.submitItem(context);
-                        if (success) {
-                          controller.clearFields();
-                          Navigator.pop(context, true);
-                          widget.onTipAdded();
-                        }
-                      },
-                      child: Container(
-                        width: double.infinity,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color: AppColors().primaryColor,
-                          borderRadius: BorderRadius.circular(25),
-                        ),
-                        child: const Center(
-                          child: Text(
-                            'Add',
+                      // -------------------- DESCRIPTION --------------------
+                      CustomTextFormField(
+                        maxLines: 5,
+                        controller: addItemsDescription,
+                        hintText: 'وصف',
+                        icon: Icons.description,
+                        validator: validated,
+                        focusNode: addItemsDescriptionFocus,
+                      ),
+
+                      const SizedBox(height: 18),
+
+                      // -------------------- QUANTITY --------------------
+                      CustomTextFormField(
+                        controller: addItemsQuantity,
+                        hintText: "كمية",
+                        icon: Icons.numbers,
+                        keyboardType: TextInputType.number,
+                        validator: validated,
+                        focusNode: addItemsQuantityFocus,
+                      ),
+
+                      const SizedBox(height: 18),
+
+                      // -------------------- CATEGORY --------------------
+                      controller.customDropdown(
+                        value: controller.selectedCategoryName,
+                        hint: "حدد الفئة",
+                        items: controller.categories
+                            .map((c) => c['name'] as String)
+                            .toList(),
+                        onChanged: (value) {
+                          controller.selectCategory(value);
+                          setState(() {});
+                        },
+                      ),
+                      const SizedBox(height: 18),
+
+                      // -------------------- CONDITION --------------------
+                      controller.customDropdown(
+                        value: controller.selectedCondition,
+                        hint: "حدد الحالة",
+                        items: controller.itemConditions,
+                        onChanged: (value) {
+                          controller.selectCondition(value);
+                          setState(() {});
+                        },
+                      ),
+                      const SizedBox(height: 18),
+
+                      // -------------------- AVAILABLE SWITCH --------------------
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            "هل هو متاح؟",
                             style: TextStyle(
-                              color: Colors.white,
                               fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
+                          Switch(
+                            value: controller.isAvailable,
+                            activeColor: AppColors().primaryColor,
+                            onChanged: (v) {
+                              controller.toggleAvailability(
+                                v,
+                              ); // يحدث القيمة داخل الـ controller
+                              setState(() {}); // يحدث واجهة المستخدم
+                            },
+                          ),
+                        ],
+                      ),
+
+                      const SizedBox(height: 25),
+
+                      // -------------------- SUBMIT --------------------
+                      GestureDetector(
+                        onTap: () async {
+                          if (!controller.formKey.currentState!.validate())
+                            return;
+
+                          final success = await controller.submitItem(context);
+                          if (success) {
+                            controller.clearFields();
+                            Navigator.pop(context, true);
+                            widget.onTipAdded();
+                          }
+                        },
+                        child: Container(
+                          width: double.infinity,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: AppColors().primaryColor,
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                          child: const Center(
+                            child: Text(
+                              'إضافة',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
 
-                    const SizedBox(height: 25),
-                  ],
+                      const SizedBox(height: 25),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

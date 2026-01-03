@@ -62,129 +62,132 @@ class _SettingsScreenState extends State<SettingsScreen> {
       //     ),
       //   ],
       // ),
-      body: Center(
-        child: Column(
-          children: [
-            const CustomHeader(icon: Icons.settings, title: 'Settings'),
-            const SizedBox(height: 20),
-            // صورة البروفايل
-            CircleAvatar(
-              radius: 75,
-              backgroundColor: Colors.grey[300],
-              backgroundImage: selectedImage != null
-                  ? FileImage(selectedImage!)
-                  : NetworkImage(
-                          profileData?['image'] ??
-                              'assets/images/autism-high-resolution-logo.png',
-                        )
-                        as ImageProvider, // ضع صورتك هنا
-            ),
-            const SizedBox(height: 15),
-            Text(
-              profileData?['full_name'] ?? '',
+      body: Directionality(
+        textDirection: TextDirection.rtl,
+        child: Center(
+          child: Column(
+            children: [
+              const CustomHeader(icon: Icons.settings, title: 'الإعدادات'),
+              const SizedBox(height: 20),
+              // صورة البروفايل
+              CircleAvatar(
+                radius: 75,
+                backgroundColor: Colors.grey[300],
+                backgroundImage: selectedImage != null
+                    ? FileImage(selectedImage!)
+                    : NetworkImage(
+                            profileData?['image'] ??
+                                'assets/images/autism-high-resolution-logo.png',
+                          )
+                          as ImageProvider, // ضع صورتك هنا
+              ),
+              const SizedBox(height: 15),
+              Text(
+                profileData?['full_name'] ?? '',
 
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 2),
-            Text(
-              profileData?['phone_number'] ?? '',
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                profileData?['phone_number'] ?? '',
 
-              style: TextStyle(fontSize: 16, color: Colors.grey),
-            ),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: () async {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => EditeProfileScreen()),
-                ).then((value) {
-                  if (value == true) {
-                    loadProfile(); // 👈 هذا سيعمل refresh تلقائي
-                  }
-                });
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25),
-                  side: const BorderSide(color: Colors.grey),
+                style: TextStyle(fontSize: 16, color: Colors.grey),
+              ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () async {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => EditeProfileScreen()),
+                  ).then((value) {
+                    if (value == true) {
+                      loadProfile(); // 👈 هذا سيعمل refresh تلقائي
+                    }
+                  });
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25),
+                    side: const BorderSide(color: Colors.grey),
+                  ),
+                ),
+                child: const Text(
+                  "تعديل الملف الشخصي",
+                  style: TextStyle(color: Colors.black),
                 ),
               ),
-              child: const Text(
-                "Edit Profile",
-                style: TextStyle(color: Colors.black),
-              ),
-            ),
-            const SizedBox(height: 20),
-            userRole == "Donor"
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      FutureBuilder(
-                        future: CurrentUserData().getCurrentDonationsCount(),
-                        builder: (context, snapshot) {
-                          final count = snapshot.data ?? 0;
-                          return Column(
-                            children: [
-                              Text(
-                                "$count",
-                                style: TextStyle(
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.bold,
+              const SizedBox(height: 20),
+              userRole == "الواهب"
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        FutureBuilder(
+                          future: CurrentUserData().getCurrentDonationsCount(),
+                          builder: (context, snapshot) {
+                            final count = snapshot.data ?? 0;
+                            return Column(
+                              children: [
+                                Text(
+                                  "$count",
+                                  style: TextStyle(
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),
-                              SizedBox(height: 5),
-                              Text(
-                                "Current donations",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
+                                SizedBox(height: 5),
+                                Text(
+                                  "التبرعات الحالية",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),
-                            ],
-                          );
-                        },
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 25),
-                        child: SizedBox(
-                          height: 50,
-                          child: VerticalDivider(
-                            thickness: 3,
-                            color: Colors.black,
+                              ],
+                            );
+                          },
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 40),
+                          child: SizedBox(
+                            height: 50,
+                            child: VerticalDivider(
+                              thickness: 3,
+                              color: Colors.black,
+                            ),
                           ),
                         ),
-                      ),
-                      FutureBuilder(
-                        future: CurrentUserData().getPreviousDonationsCount(),
-                        builder: (context, snapshot) {
-                          final count = snapshot.data ?? 0;
-                          return Column(
-                            children: [
-                              Text(
-                                "$count",
-                                style: TextStyle(
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.bold,
+                        FutureBuilder(
+                          future: CurrentUserData().getPreviousDonationsCount(),
+                          builder: (context, snapshot) {
+                            final count = snapshot.data ?? 0;
+                            return Column(
+                              children: [
+                                Text(
+                                  "$count",
+                                  style: TextStyle(
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),
-                              SizedBox(height: 5),
-                              Text(
-                                "Previous donations",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
+                                SizedBox(height: 5),
+                                Text(
+                                  "التبرعات السابقة",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),
-                            ],
-                          );
-                        },
-                      ),
-                    ],
-                  )
-                : SizedBox.shrink(),
-          ],
+                              ],
+                            );
+                          },
+                        ),
+                      ],
+                    )
+                  : SizedBox.shrink(),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: Container(
@@ -212,7 +215,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             children: [
               buildListTile(
                 icon: Icons.save,
-                title: "Save Items",
+                title: "العناصر المحفوظة",
                 trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                 onTap: () {
                   Navigator.push(
@@ -226,35 +229,35 @@ class _SettingsScreenState extends State<SettingsScreen> {
               divider(),
               buildListTile(
                 icon: Icons.settings,
-                title: "Settings",
+                title: "إعدادات",
                 trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                 onTap: () {},
               ),
               divider(),
               buildListTile(
                 icon: Icons.lock,
-                title: "Change password",
+                title: "تغيير كلمة المرور",
                 trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                 onTap: () {},
               ),
               divider(),
               buildListTile(
                 icon: Icons.card_giftcard_sharp,
-                title: "Refer friends",
+                title: "إحالة الأصدقاء",
                 trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                 onTap: () {},
               ),
               divider(),
               buildListTile(
                 icon: Icons.info,
-                title: "About",
+                title: "حول",
                 trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                 onTap: () {},
               ),
               divider(),
               buildListTile(
                 icon: Icons.phone,
-                title: "Contact us",
+                title: "اتصل بنا",
                 trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                 onTap: () {},
               ),

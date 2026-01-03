@@ -52,7 +52,9 @@ class _UserItemsCardState extends State<UserItemsCard> {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(right: 15, left: 15, bottom: 10),
+
       decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey.shade400, width: 1),
         color: Colors.grey[200],
         borderRadius: BorderRadius.circular(20),
       ),
@@ -230,7 +232,7 @@ class _UserItemsCardState extends State<UserItemsCard> {
                     print('likedddddddddddddddddddddd');
                   },
                   icon: Icons.thumb_up_outlined,
-                  title: 'Like',
+                  title: 'إعجاب',
                   flipColorOnTap: true,
                 ),
               ),
@@ -243,13 +245,13 @@ class _UserItemsCardState extends State<UserItemsCard> {
                     print("Item Saved Status Changed");
                   },
                   icon: Icons.save_outlined,
-                  title: 'Save',
+                  title: 'حفظ',
                   flipColorOnTap: false, // ← لا تغيّر اللون تلقائياً
                   isActive: isSaved, // ← اللون يأتي من حالة الحفظ
                 ),
               ),
-              userRole == 'Recipient' ? SizedBox(width: 15) : SizedBox.shrink(),
-              userRole == 'Recipient'
+              userRole == 'الموهوب' ? SizedBox(width: 15) : SizedBox.shrink(),
+              userRole == 'الموهوب'
                   ? Expanded(
                       child: SaveButtonWidgetMyItems(
                         ontap: () {
@@ -266,7 +268,7 @@ class _UserItemsCardState extends State<UserItemsCard> {
                           );
                         },
                         icon: Icons.volunteer_activism_outlined,
-                        title: 'Order',
+                        title: 'طلب',
                       ),
                     )
                   : SizedBox.shrink(),
